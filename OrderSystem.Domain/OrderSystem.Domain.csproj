@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <Folder Include="Entities/" />
+    <Folder Include="Repository/" />
+    <Folder Include="UnitOfWork/" />
   </ItemGroup>
 
 </Project>
