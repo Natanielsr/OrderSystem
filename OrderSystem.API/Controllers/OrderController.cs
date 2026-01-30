@@ -12,10 +12,9 @@ namespace OrderSystem.API.Controllers
     {
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateOrderDto createOrderDto)
+        public async Task<IActionResult> Create([FromBody] CreateOrderCommand createOrderCommand)
         {
-            CreateOrderCommand command = new CreateOrderCommand(createOrderDto);
-            var response = await mediator.Send(command);
+            var response = await mediator.Send(createOrderCommand);
 
             return CreatedAtRoute(nameof(Create), response, response.OrderId);
         }
