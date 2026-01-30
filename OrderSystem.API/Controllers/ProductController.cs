@@ -12,7 +12,7 @@ namespace OrderSystem.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var result = await productRepository.GetAll();
+            var result = await productRepository.GetAllAsync();
             var products = result.Select(e => (Product)e);
             return Ok(products);
         }
