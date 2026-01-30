@@ -8,5 +8,11 @@ public abstract class Entity
 
     public bool Active { get; set; }
 
-
+    public void SetNewEntity()
+    {
+        Id = Guid.NewGuid();
+        CreationDate = DateTimeOffset.UtcNow;
+        UpdateDate = DateTimeOffset.UtcNow;
+        Active = true;
+    }
 }
