@@ -4,8 +4,8 @@ namespace OrderSystem.Domain.Repository;
 
 public interface IRepository
 {
-    public Task<Entity> Add(Entity entity);
-    public Task<IEnumerable<Entity>> GetAll();
-    public Task<Entity> GetById(Guid Id);
-    public Task<bool> Delete(Guid id);
+    public Task<Entity> AddAsync(Entity entity);
+    public Task<IEnumerable<Entity>> GetAllAsync();
+    public Task<Entity> GetByIdAsync(Guid Id);
+    public Task<bool> DeleteAsync(Guid id);
 }
