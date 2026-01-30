@@ -1,4 +1,3 @@
-using System;
 using AutoMapper;
 using OrderSystem.Application.DTOs;
 using OrderSystem.Application.Orders.Commands.CreateOrder;
@@ -10,12 +9,13 @@ public class OrderMappingProfile : Profile
 {
     public OrderMappingProfile()
     {
+        CreateMap<OrderProduct, CreateOrderProductResponseDto>();
         CreateMap<Order, CreateOrderResponseDto>();
 
         CreateMap<CreateOrderCommand, Order>()
-            .ForMember(
-                dest => dest.ProductsOrder,
-                opt => opt.Ignore()
-            );
+            .ForMember(dest => dest.OrderProducts, opt => opt.Ignore());
+
+        CreateMap<Order, OrderDto>();
+        CreateMap<OrderProduct, OrderProductDto>();
     }
 }
