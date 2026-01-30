@@ -6,8 +6,10 @@ namespace OrderSystem.Infrastructure.Repository;
 
 public class OrderRepositoryTEST : IOrderRepository
 {
+    List<Order> orders = new List<Order>();
     public async Task<Entity> Add(Entity entity)
     {
+        orders.Add((Order)entity);
         return entity;
     }
 
