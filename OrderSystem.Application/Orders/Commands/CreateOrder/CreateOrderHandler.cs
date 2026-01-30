@@ -18,49 +18,49 @@ public class CreateOrderHandler(
         Order order = mapper.Map<Order>(request);
         order.SetNewEntity();
 
-        order = await addProducts(request.Products, order);
+        order = await addProducts(request.OrderProducts, order);
 
-        Order createdOrder = (Order)await orderUnitOfWork.orderRepository.Add(order);
+        Order createdOrder = (Order)await orderUnitOfWork.orderRepository.AddAsync(order);
         var success = await orderUnitOfWork.CommitAsync();
 
         if (!success)
             throw new Exception("Error processing the order");
 
-        return new CreateOrderResponseDto()
-        {
-            UserId = order.Id,
-            OrderId = createdOrder.Id,
-            ProductOrderResponseDtos = createdOrder.ProductsOrder.Select(
-                p => new ProductOrderResponseDto()
-                {
-                    ProductId = p.ProductId,
-                    Quantity = p.Quantity,
-                    UnitPrice = p.UnitPrice
-                }
-            ).ToList()
-        };
+        CreateOrderResponseDto createOrderResponseDto = mapper.Map<CreateOrderResponseDto>(createdOrder);
+
+        return createOrderResponseDto;
     }
 
-    private async Task<Order> addProducts(List<ProductOrderDto> productOrderDtos, Order order)
+    private async Task<Order> addProducts(List<CreateOrderProductDto> createOrderProductDtos, Order order)
     {
-        foreach (var productDto in productOrderDtos)
+        if (HasDuplicates(createOrderProductDtos))
+            throw new DuplicateProductInOrderException();
+
+        foreach (var productDto in createOrderProductDtos)
         {
-            Product product = (Product)await orderUnitOfWork.productRepository.GetById(productDto.ProductId);
+            Product product = (Product)await orderUnitOfWork.productRepository.GetByIdAsync(productDto.ProductId);
             if (product is null)
                 throw new ProductNotFoundException();
 
-            ProductOrder productOrder = new ProductOrder()
+
+            OrderProduct orderProduct = new OrderProduct()
             {
                 ProductId = product.Id,
                 Quantity = productDto.Quantity,
                 UnitPrice = product.Price
             };
 
-            order.AddProductOrder(productOrder);
+            order.AddProductOrder(orderProduct);
             product.ReduceInStock(productDto.Quantity);
 
         }
 
         return order;
+    }
+
+    private bool HasDuplicates(List<CreateOrderProductDto> list)
+    {
+        // Compara o total de itens com o total de IDs únicos
+        return !(list.Select(x => x.ProductId).Distinct().Count() == list.Count);
     }
 }
