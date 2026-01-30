@@ -3,6 +3,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using OrderSystem.Application.DTOs;
 using OrderSystem.Application.Orders.Commands.CreateOrder;
+using OrderSystem.Application.Orders.Queries.GetOrderById;
+using OrderSystem.Application.Orders.Queries.ListOrders;
 
 namespace OrderSystem.API.Controllers
 {
@@ -14,16 +16,25 @@ namespace OrderSystem.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateOrderCommand createOrderCommand)
         {
-            var response = await mediator.Send(createOrderCommand);
+            CreateOrderResponseDto response = await mediator.Send(createOrderCommand);
 
-            return CreatedAtRoute(nameof(Create), response, response.OrderId);
+            return CreatedAtRoute("GetOrderById", new { id = response.Id }, response);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            var response = await mediator.Send(new ListOrdersQuery());
+            return Ok(response);
+        }
 
-            return Ok();
+        [HttpGet("{id:guid}", Name = "GetOrderById")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var response = await mediator.Send(new GetOrderByIdQuery(id));
+
+            return Ok(response);
+
         }
     }
 }
