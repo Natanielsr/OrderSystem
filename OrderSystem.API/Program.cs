@@ -1,6 +1,10 @@
 
 using FluentValidation;
 using OrderSystem.Application.Orders.Commands.CreateOrder;
+using OrderSystem.Domain.Repository;
+using OrderSystem.Domain.UnitOfWork;
+using OrderSystem.Infrastructure.Repository;
+using OrderSystem.Infrastructure.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
 var assembly = typeof(Program).Assembly;
@@ -24,6 +28,11 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(assembly);
     cfg.AddOpenBehavior(typeof(CreateOrderValidationBehavior<,>));
 });
+
+//fake repository and unitofwork
+builder.Services.AddSingleton<IOrderRepository, OrderRepositoryTEST>();
+builder.Services.AddSingleton<IProductRepository, ProductRepositoryTEST>();
+builder.Services.AddScoped<IOrderUnitOfWork, OrderUnitOfWorkTEST>();
 
 var app = builder.Build();
 
