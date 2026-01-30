@@ -1,6 +1,8 @@
 
 using FluentValidation;
+using OrderSystem.Application.Mappings;
 using OrderSystem.Application.Orders.Commands.CreateOrder;
+using OrderSystem.Application.Orders.Queries.ListOrders;
 using OrderSystem.Domain.Repository;
 using OrderSystem.Domain.UnitOfWork;
 using OrderSystem.Infrastructure.Repository;
@@ -20,12 +22,13 @@ builder.Services.AddValidatorsFromAssembly(assembly);
 
 // Isso fará o AutoMapper procurar por qualquer classe que herde de 'Profile' 
 // no assembly onde o seu MappingProfile (ou qualquer classe da Application) está.
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(typeof(OrderMappingProfile).Assembly);
 
 // Configura o MediatR e adiciona o Behavior
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(assembly);
+    cfg.RegisterServicesFromAssembly(typeof(ListOrdersQuery).Assembly);
     cfg.AddOpenBehavior(typeof(CreateOrderValidationBehavior<,>));
 });
 
