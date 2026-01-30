@@ -11,9 +11,6 @@ public class Order : Entity
 
     public decimal Total()
     {
-        if (ProductsOrder is null)
-            throw new Exception("ProductsOrder cant be null");
-
         decimal total = 0;
         foreach (ProductOrder p in ProductsOrder)
         {
@@ -25,6 +22,16 @@ public class Order : Entity
 
     public void AddProductOrder(ProductOrder productOrder)
     {
+        if (productOrder is null)
+            throw new Exception("productOrder cant be null");
+
+        if (productOrder.Quantity <= 0)
+            throw new Exception("productOrder quantity must be bigger then zero");
+
+        if (productOrder.UnitPrice <= 0)
+            throw new Exception("productOrder UnitPrice must be bigger then zero");
+
+
         ProductsOrder.Add(productOrder);
     }
 }
