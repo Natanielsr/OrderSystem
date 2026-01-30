@@ -1,6 +1,9 @@
+using MediatR;
+using OrderSystem.Application.DTOs;
+
 namespace OrderSystem.Application.Orders.Queries.GetOrderById;
 
-public record class GetOrderByIdQuery
+public record class GetOrderByIdQuery(Guid Id) : IRequest<OrderDto>
 {
 
 }
