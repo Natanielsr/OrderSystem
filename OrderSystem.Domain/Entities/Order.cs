@@ -2,7 +2,7 @@ namespace OrderSystem.Domain.Entities;
 
 public class Order : Entity
 {
-    public List<ProductOrder> ProductsOrder { get; private set; } = new List<ProductOrder>();
+    public List<OrderProduct> OrderProducts { get; private set; } = new List<OrderProduct>();
     public Guid UserId { get; set; }
     public User? OrderUser { get; set; }
 
@@ -12,7 +12,7 @@ public class Order : Entity
     public decimal Total()
     {
         decimal total = 0;
-        foreach (ProductOrder p in ProductsOrder)
+        foreach (OrderProduct p in OrderProducts)
         {
             total += p.Total();
         }
@@ -20,7 +20,7 @@ public class Order : Entity
         return total;
     }
 
-    public void AddProductOrder(ProductOrder productOrder)
+    public void AddProductOrder(OrderProduct productOrder)
     {
         if (productOrder is null)
             throw new Exception("productOrder cant be null");
@@ -32,6 +32,6 @@ public class Order : Entity
             throw new Exception("productOrder UnitPrice must be bigger then zero");
 
 
-        ProductsOrder.Add(productOrder);
+        OrderProducts.Add(productOrder);
     }
 }
