@@ -13,23 +13,23 @@ public class ProductRepositoryTEST : IProductRepository
         new (){ Id= Guid.NewGuid(), Name = "Mouse", Price = 3, AvailableQuantity = 3},
     };
 
-    public async Task<Entity> Add(Entity entity)
+    public async Task<Entity> AddAsync(Entity entity)
     {
         products.Add((Product)entity);
         return entity;
     }
 
-    public Task<bool> Delete(Guid id)
+    public Task<bool> DeleteAsync(Guid id)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<IEnumerable<Entity>> GetAll()
+    public async Task<IEnumerable<Entity>> GetAllAsync()
     {
         return products;
     }
 
-    public async Task<Entity> GetById(Guid Id)
+    public async Task<Entity> GetByIdAsync(Guid Id)
     {
         return products.FirstOrDefault(p => p.Id == Id)!;
     }

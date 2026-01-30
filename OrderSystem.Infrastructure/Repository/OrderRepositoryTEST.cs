@@ -7,24 +7,24 @@ namespace OrderSystem.Infrastructure.Repository;
 public class OrderRepositoryTEST : IOrderRepository
 {
     List<Order> orders = new List<Order>();
-    public async Task<Entity> Add(Entity entity)
+    public async Task<Entity> AddAsync(Entity entity)
     {
         orders.Add((Order)entity);
         return entity;
     }
 
-    public Task<bool> Delete(Guid id)
+    public Task<bool> DeleteAsync(Guid id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<Entity>> GetAll()
+    public async Task<IEnumerable<Entity>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        return orders;
     }
 
-    public Task<Entity> GetById(Guid Id)
+    public async Task<Entity> GetByIdAsync(Guid Id)
     {
-        throw new NotImplementedException();
+        return orders.First(o => o.Id == Id);
     }
 }
