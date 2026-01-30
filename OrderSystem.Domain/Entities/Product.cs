@@ -22,7 +22,7 @@ public class Product : Entity
         }
 
 
-        this.AvailableQuantity += Quantity;
+        this.AvailableQuantity -= Quantity;
 
         return this.AvailableQuantity;
     }
