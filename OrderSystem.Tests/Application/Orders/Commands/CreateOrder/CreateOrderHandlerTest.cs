@@ -19,10 +19,11 @@ public class CreateOrderHandlerTest
 
     private readonly List<Product> TestProducts = new List<Product>()
     {
-        new () { Id = Guid.NewGuid(), AvailableQuantity = 1, Price = 1},
-        new () { Id = Guid.NewGuid(), AvailableQuantity = 2, Price = 2},
-        new () { Id = Guid.NewGuid(), AvailableQuantity = 3, Price = 3},
+        new ( Guid.NewGuid(), "Product1", 1, 1),
+        new ( Guid.NewGuid(), "Product2", 2, 2),
+        new ( Guid.NewGuid(), "Product3", 3, 3),
     };
+
     Order? order;
     private readonly Guid OrderId = Guid.NewGuid();
 
@@ -58,8 +59,7 @@ public class CreateOrderHandlerTest
 
     void createMockOrder()
     {
-        order = new();
-        order.Id = OrderId;
+        order = new(OrderId);
 
         foreach (var product in TestProducts)
         {
@@ -219,6 +219,31 @@ public class CreateOrderHandlerTest
         // BÔNUS: Verificar se o método foi chamado exatamente uma vez
         mockOrderUnitOfWork.Verify(m => m.productRepository.GetByIdAsync(It.IsAny<Guid>()), Times.Never);
         mockOrderUnitOfWork.Verify(m => m.orderRepository.AddAsync(It.IsAny<Order>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task ReduceStockProductsInOrderTest()
+    {
+        //Arrange
+        var product = TestProducts.ElementAt(0);
+        var productId = TestProducts.ElementAt(0).Id;
+        List<CreateOrderProductDto> createOrderProductDtos = new List<CreateOrderProductDto>()
+        {
+            new() { ProductId = productId, Quantity = 1 }
+        };
+
+        CreateOrderCommand command = new(createOrderProductDtos, Guid.NewGuid());
+
+        //Act
+        var response = await createOrderHandler.Handle(command, cancellationToken);
+
+        //Assert
+        Assert.Equal(0, product.AvailableQuantity);
+
+        // BÔNUS: Verificar se o método foi chamado exatamente uma vez
+        mockOrderUnitOfWork.Verify(m => m.productRepository.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
+        mockOrderUnitOfWork.Verify(m => m.orderRepository.AddAsync(It.IsAny<Order>()), Times.Once);
+        mockOrderUnitOfWork.Verify(m => m.productRepository.UpdateAsync(productId, product), Times.Once);
     }
 
 }
