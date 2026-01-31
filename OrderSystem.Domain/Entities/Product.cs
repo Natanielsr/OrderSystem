@@ -1,13 +1,44 @@
+using System.Data.Common;
 using OrderSystem.Domain.Exceptions;
 
 namespace OrderSystem.Domain.Entities;
 
 public class Product : Entity
 {
-    public string Name { get; set; } = string.Empty;
-    public decimal Price { get; set; }
+    public string Name { get; private set; } = string.Empty;
+    public decimal Price { get; private set; }
 
-    public int AvailableQuantity { get; set; }
+    public int AvailableQuantity { get; private set; }
+
+    protected Product() { }
+
+    public Product(
+        Guid id,
+        string name,
+        decimal price,
+        int availableQuantity
+        ) : base(id)
+    {
+        this.Name = name;
+        this.Price = price;
+        this.AvailableQuantity = availableQuantity;
+        SetDefaultEntityProps();
+    }
+
+    public Product(
+        Guid id,
+        DateTimeOffset creationDate,
+        DateTimeOffset updateDate,
+        bool active,
+        string name,
+        decimal price,
+        int availableQuantity
+        ) : base(id, creationDate, updateDate, active)
+    {
+        this.Name = name;
+        this.Price = price;
+        this.AvailableQuantity = availableQuantity;
+    }
 
     public int ReduceInStock(int Quantity)
     {
