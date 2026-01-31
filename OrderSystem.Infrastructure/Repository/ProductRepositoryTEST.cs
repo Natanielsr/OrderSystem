@@ -8,9 +8,9 @@ public class ProductRepositoryTEST : IProductRepository
 {
     List<Product> products = new List<Product>()
     {
-        new (){ Id= Guid.NewGuid(), Name = "Monitor", Price = 1, AvailableQuantity = 1},
-        new (){ Id= Guid.NewGuid(), Name = "Teclado", Price = 2, AvailableQuantity = 2},
-        new (){ Id= Guid.NewGuid(), Name = "Mouse", Price = 3, AvailableQuantity = 3},
+        new ( Guid.NewGuid(), "Monitor", 1, 1),
+        new ( Guid.NewGuid(),  "Teclado", 2,  2),
+        new (Guid.NewGuid(), "Mouse",  3,  3),
     };
 
     public async Task<Entity> AddAsync(Entity entity)
@@ -32,5 +32,13 @@ public class ProductRepositoryTEST : IProductRepository
     public async Task<Entity> GetByIdAsync(Guid Id)
     {
         return products.FirstOrDefault(p => p.Id == Id)!;
+    }
+
+    public async Task<Entity> UpdateAsync(Guid id, Entity updatedEntity)
+    {
+        var index = products.FindIndex(p => p.Id == id);
+        products[index] = (Product)updatedEntity;
+
+        return products[index];
     }
 }
