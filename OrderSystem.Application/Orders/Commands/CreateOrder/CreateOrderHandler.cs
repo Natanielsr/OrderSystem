@@ -51,7 +51,9 @@ public class CreateOrderHandler(
             };
 
             order.AddProductOrder(orderProduct);
+
             product.ReduceInStock(productDto.Quantity);
+            await orderUnitOfWork.productRepository.UpdateAsync(product.Id, product);
 
         }
 
