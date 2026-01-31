@@ -27,4 +27,9 @@ public class OrderRepositoryTEST : IOrderRepository
     {
         return orders.First(o => o.Id == Id);
     }
+
+    public Task<Entity> UpdateAsync(Guid id, Entity updatedEntity)
+    {
+        throw new NotImplementedException();
+    }
 }
