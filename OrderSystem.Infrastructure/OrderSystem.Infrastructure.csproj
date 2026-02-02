@@ -7,6 +7,8 @@
   <ItemGroup>
     <Folder Include="Data/" />
     <Folder Include="Repository/" />
+    <Folder Include="Tests/" />
+    <Folder Include="Repository/EntityFramework/" />
   </ItemGroup>
 
   <ItemGroup>
