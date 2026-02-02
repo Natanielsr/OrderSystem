@@ -1,6 +1,5 @@
 
 using FluentValidation;
-using Microsoft.AspNetCore.Http.HttpResults;
 using OrderSystem.API.Filters;
 using OrderSystem.Application.Mappings;
 using OrderSystem.Application.Orders.Commands.CreateOrder;
@@ -9,7 +8,7 @@ using OrderSystem.Application.Validator;
 using OrderSystem.Domain.Repository;
 using OrderSystem.Domain.UnitOfWork;
 using OrderSystem.Infrastructure;
-using OrderSystem.Infrastructure.Repository;
+using OrderSystem.Infrastructure.Repository.EntityFramework;
 using OrderSystem.Infrastructure.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,11 +43,10 @@ builder.Services.AddMediatR(cfg =>
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
-//fake repository and unitofwork
-builder.Services.AddSingleton<IOrderRepository, OrderRepositoryTEST>();
-builder.Services.AddSingleton<IProductRepository, ProductRepositoryTEST>();
-builder.Services.AddSingleton<IUserRepository, UserRepositoryTEST>();
-builder.Services.AddScoped<IOrderUnitOfWork, OrderUnitOfWorkTEST>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IOrderUnitOfWork, OrderUnitOfWork>();
 
 var app = builder.Build();
 

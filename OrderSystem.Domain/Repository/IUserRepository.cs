@@ -1,4 +1,3 @@
-using System;
 
 namespace OrderSystem.Domain.Repository;
 

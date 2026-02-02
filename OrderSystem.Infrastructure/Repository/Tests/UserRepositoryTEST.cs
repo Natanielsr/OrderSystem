@@ -2,7 +2,7 @@ using System;
 using OrderSystem.Domain.Entities;
 using OrderSystem.Domain.Repository;
 
-namespace OrderSystem.Infrastructure.Repository;
+namespace OrderSystem.Infrastructure.Repository.Tests;
 
 public class UserRepositoryTEST : IUserRepository
 {
