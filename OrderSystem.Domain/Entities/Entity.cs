@@ -28,7 +28,7 @@ public abstract class Entity
         SetDefaultEntityProps();
     }
 
-    protected void SetDefaultEntityProps()
+    public void SetDefaultEntityProps()
     {
         CreationDate = DateTimeOffset.UtcNow;
         UpdateDate = DateTimeOffset.UtcNow;
