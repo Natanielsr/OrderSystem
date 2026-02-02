@@ -13,6 +13,11 @@ public class UserRepositoryTEST : IUserRepository
         new (Guid.NewGuid()){ Name = "TestUser3", Email = "testuser3@email.com" },
     };
 
+    public UserRepositoryTEST()
+    {
+        users.ForEach(u => Console.WriteLine($"{u.Name} : {u.Id}"));
+    }
+
     public async Task<Entity> AddAsync(Entity entity)
     {
         users.Add((User)entity);
