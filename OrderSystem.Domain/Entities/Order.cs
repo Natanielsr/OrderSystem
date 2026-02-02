@@ -1,3 +1,5 @@
+using OrderSystem.Domain.Exceptions;
+
 namespace OrderSystem.Domain.Entities;
 
 public class Order : Entity
@@ -53,13 +55,13 @@ public class Order : Entity
     public void AddProductOrder(OrderProduct productOrder)
     {
         if (productOrder is null)
-            throw new Exception("productOrder cant be null");
+            throw new AddProductOrderException("productOrder cant be null");
 
         if (productOrder.Quantity <= 0)
-            throw new Exception("productOrder quantity must be bigger then zero");
+            throw new AddProductOrderException("productOrder quantity must be bigger then zero");
 
         if (productOrder.UnitPrice <= 0)
-            throw new Exception("productOrder UnitPrice must be bigger then zero");
+            throw new AddProductOrderException("productOrder UnitPrice must be bigger then zero");
 
 
         OrderProducts.Add(productOrder);
