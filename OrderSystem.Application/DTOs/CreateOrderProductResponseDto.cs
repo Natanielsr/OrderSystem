@@ -5,4 +5,6 @@ public record class CreateOrderProductResponseDto
     public required Guid ProductId { get; set; }
     public required int Quantity { get; set; }
     public required decimal UnitPrice { get; set; }
+
+    public decimal Total { get; set; }
 }
