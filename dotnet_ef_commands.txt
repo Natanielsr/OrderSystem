@@ -1,0 +1,7 @@
+# Para Criar uma Migração
+dotnet ef migrations add NomeDaMigration --project NomeDaInfra --startup-project NomeDaAPI
+dotnet ef migrations add InitialCreate --project OrderSystem.Infrastructure --startup-project OrderSystem.API
+
+# Para Atualizar o Banco
+dotnet ef database update --project NomeDaInfra --startup-project NomeDaAPI
+dotnet ef database update --project OrderSystem.Infrastructure --startup-project OrderSystem.API

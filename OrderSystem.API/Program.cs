@@ -8,6 +8,7 @@ using OrderSystem.Application.Orders.Queries.ListOrders;
 using OrderSystem.Application.Validator;
 using OrderSystem.Domain.Repository;
 using OrderSystem.Domain.UnitOfWork;
+using OrderSystem.Infrastructure;
 using OrderSystem.Infrastructure.Repository;
 using OrderSystem.Infrastructure.UnitOfWork;
 
@@ -40,6 +41,8 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(ListOrdersQuery).Assembly);
 
 });
+
+builder.Services.AddInfrastructure(builder.Configuration);
 
 //fake repository and unitofwork
 builder.Services.AddSingleton<IOrderRepository, OrderRepositoryTEST>();
