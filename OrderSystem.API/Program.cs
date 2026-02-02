@@ -5,6 +5,7 @@ using OrderSystem.API.Filters;
 using OrderSystem.Application.Mappings;
 using OrderSystem.Application.Orders.Commands.CreateOrder;
 using OrderSystem.Application.Orders.Queries.ListOrders;
+using OrderSystem.Application.Validator;
 using OrderSystem.Domain.Repository;
 using OrderSystem.Domain.UnitOfWork;
 using OrderSystem.Infrastructure.Repository;
@@ -20,10 +21,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<BadRequestFilter>();
+    options.Filters.Add<ValidationExceptionFilter>();
 });
 
 // Registra todos os validators do assembly
-builder.Services.AddValidatorsFromAssembly(assembly);
+builder.Services.AddValidatorsFromAssemblyContaining<CreateOrderValidator>();
 
 // Isso fará o AutoMapper procurar por qualquer classe que herde de 'Profile' 
 // no assembly onde o seu MappingProfile (ou qualquer classe da Application) está.
@@ -32,9 +34,11 @@ builder.Services.AddAutoMapper(typeof(OrderMappingProfile).Assembly);
 // Configura o MediatR e adiciona o Behavior
 builder.Services.AddMediatR(cfg =>
 {
+    cfg.RegisterServicesFromAssemblyContaining<Program>();
+    cfg.AddOpenBehavior(typeof(CreateOrderValidationBehavior<,>));
     cfg.RegisterServicesFromAssembly(assembly);
     cfg.RegisterServicesFromAssembly(typeof(ListOrdersQuery).Assembly);
-    cfg.AddOpenBehavior(typeof(CreateOrderValidationBehavior<,>));
+
 });
 
 //fake repository and unitofwork

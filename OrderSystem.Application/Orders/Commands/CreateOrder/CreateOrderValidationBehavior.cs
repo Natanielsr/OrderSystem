@@ -1,11 +1,10 @@
-using System.Windows.Input;
 using FluentValidation;
 using MediatR;
 
 namespace OrderSystem.Application.Orders.Commands.CreateOrder;
 
 public class CreateOrderValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : ICommand
+    where TRequest : IRequest<TResponse>
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
