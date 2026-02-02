@@ -3,13 +3,15 @@ using MediatR;
 using OrderSystem.Application.DTOs;
 using OrderSystem.Domain.Entities;
 using OrderSystem.Domain.Exceptions;
+using OrderSystem.Domain.Repository;
 using OrderSystem.Domain.UnitOfWork;
 
 namespace OrderSystem.Application.Orders.Commands.CreateOrder;
 
 public class CreateOrderHandler(
     IOrderUnitOfWork orderUnitOfWork,
-    IMapper mapper
+    IMapper mapper,
+    IUserRepository userRepository
     )
 : IRequestHandler<CreateOrderCommand, CreateOrderResponseDto>
 {
@@ -17,6 +19,10 @@ public class CreateOrderHandler(
     {
         Order order = mapper.Map<Order>(request);
         order.SetNewEntity();
+
+        var isValid = await isValidUser(order.UserId);
+        if (!isValid)
+            throw new UserNotFoundException();
 
         order = await addProducts(request.OrderProducts, order);
 
@@ -29,6 +35,15 @@ public class CreateOrderHandler(
         CreateOrderResponseDto createOrderResponseDto = mapper.Map<CreateOrderResponseDto>(createdOrder);
 
         return createOrderResponseDto;
+    }
+
+    private async Task<bool> isValidUser(Guid userId)
+    {
+        User user = (User)await userRepository.GetByIdAsync(userId);
+        if (user is null)
+            return false;
+        else
+            return true;
     }
 
     private async Task<Order> addProducts(List<CreateOrderProductDto> createOrderProductDtos, Order order)

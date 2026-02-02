@@ -5,6 +5,7 @@ using OrderSystem.Application.Mappings;
 using OrderSystem.Application.Orders.Commands.CreateOrder;
 using OrderSystem.Domain.Entities;
 using OrderSystem.Domain.Exceptions;
+using OrderSystem.Domain.Repository;
 using OrderSystem.Domain.UnitOfWork;
 
 namespace OrderSystem.Tests.Application.Orders.Commands.CreateOrder;
@@ -15,6 +16,8 @@ public class CreateOrderHandlerTest
     private readonly IMapper _mapper;
 
     private Mock<IOrderUnitOfWork> mockOrderUnitOfWork;
+    private Mock<IUserRepository> mockUserRepository;
+
     CancellationToken cancellationToken = new CancellationToken();
 
     private readonly List<Product> TestProducts = new List<Product>()
@@ -27,13 +30,31 @@ public class CreateOrderHandlerTest
     Order? order;
     private readonly Guid OrderId = Guid.NewGuid();
 
+    private readonly Guid userId = Guid.NewGuid();
+    private User? user;
+
     public CreateOrderHandlerTest()
     {
         _mapper = mockAutoMapper();
         mockUnitOfWork();
         createMockOrder();
+        createMockUserRepository();
 
-        createOrderHandler = new CreateOrderHandler(mockOrderUnitOfWork!.Object, _mapper);
+        createOrderHandler = new CreateOrderHandler(mockOrderUnitOfWork!.Object, _mapper, mockUserRepository!.Object);
+    }
+
+    void createMockUserRepository()
+    {
+        mockUserRepository = new Mock<IUserRepository>();
+
+        user = new User(userId)
+        {
+            Name = "UserTest",
+            Email = "usertest@email.com"
+        };
+
+        mockUserRepository.Setup(ur => ur.GetByIdAsync(userId)).ReturnsAsync(user);
+
     }
 
     IMapper mockAutoMapper()
@@ -80,7 +101,7 @@ public class CreateOrderHandlerTest
         {
             createOrderProductDtos.Add(new() { ProductId = product.Id, Quantity = product.AvailableQuantity });
         }
-        CreateOrderCommand command = new(createOrderProductDtos, Guid.NewGuid());
+        CreateOrderCommand command = new(createOrderProductDtos, userId);
 
         return command;
     }
@@ -99,6 +120,7 @@ public class CreateOrderHandlerTest
 
         // BÔNUS: Verificar se o método foi chamado exatamente uma vez
         mockOrderUnitOfWork.Verify(m => m.orderRepository.AddAsync(It.IsAny<Order>()), Times.Once);
+        mockUserRepository.Verify(m => m.GetByIdAsync(userId), Times.Once);
     }
 
     [Fact]
@@ -180,7 +202,7 @@ public class CreateOrderHandlerTest
             new() { ProductId = Guid.NewGuid(), Quantity = 1 }
         };
 
-        CreateOrderCommand command = new(createOrderProductDtos, Guid.NewGuid());
+        CreateOrderCommand command = new(createOrderProductDtos, userId);
 
         //Act
         var er = await Assert.ThrowsAsync<ProductNotFoundException>(async () =>
@@ -206,7 +228,7 @@ public class CreateOrderHandlerTest
             new() { ProductId = TestProducts.ElementAt(0).Id, Quantity = 1 }
         };
 
-        CreateOrderCommand command = new(createOrderProductDtos, Guid.NewGuid());
+        CreateOrderCommand command = new(createOrderProductDtos, userId);
 
         //Act
         var er = await Assert.ThrowsAsync<DuplicateProductInOrderException>(async () =>
@@ -232,7 +254,7 @@ public class CreateOrderHandlerTest
             new() { ProductId = productId, Quantity = 1 }
         };
 
-        CreateOrderCommand command = new(createOrderProductDtos, Guid.NewGuid());
+        CreateOrderCommand command = new(createOrderProductDtos, userId);
 
         //Act
         var response = await createOrderHandler.Handle(command, cancellationToken);

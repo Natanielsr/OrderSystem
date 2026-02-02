@@ -44,6 +44,7 @@ builder.Services.AddMediatR(cfg =>
 //fake repository and unitofwork
 builder.Services.AddSingleton<IOrderRepository, OrderRepositoryTEST>();
 builder.Services.AddSingleton<IProductRepository, ProductRepositoryTEST>();
+builder.Services.AddSingleton<IUserRepository, UserRepositoryTEST>();
 builder.Services.AddScoped<IOrderUnitOfWork, OrderUnitOfWorkTEST>();
 
 var app = builder.Build();
