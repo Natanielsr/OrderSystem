@@ -24,6 +24,6 @@ public class OrderUnitOfWorkTEST : IOrderUnitOfWork
 
     public void Dispose()
     {
-        throw new NotImplementedException();
+        Console.WriteLine("OrderUnitOfWorkTEST Dispose");
     }
 }
