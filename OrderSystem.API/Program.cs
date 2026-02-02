@@ -1,5 +1,7 @@
 
 using FluentValidation;
+using Microsoft.AspNetCore.Http.HttpResults;
+using OrderSystem.API.Filters;
 using OrderSystem.Application.Mappings;
 using OrderSystem.Application.Orders.Commands.CreateOrder;
 using OrderSystem.Application.Orders.Queries.ListOrders;
@@ -15,7 +17,10 @@ var assembly = typeof(Program).Assembly;
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<BadRequestFilter>();
+});
 
 // Registra todos os validators do assembly
 builder.Services.AddValidatorsFromAssembly(assembly);
