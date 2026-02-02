@@ -84,12 +84,10 @@ public class CreateOrderHandlerTest
 
         foreach (var product in TestProducts)
         {
-            order.AddProductOrder(new()
-            {
-                ProductId = product.Id,
-                Quantity = product.AvailableQuantity,
-                UnitPrice = product.Price
-            });
+            order.AddProductOrder(new(
+                product.Id,
+                product.Price,
+                product.AvailableQuantity));
         }
         mockOrderUnitOfWork.Setup(m => m.orderRepository.AddAsync(It.IsAny<Order>())).ReturnsAsync(order);
     }

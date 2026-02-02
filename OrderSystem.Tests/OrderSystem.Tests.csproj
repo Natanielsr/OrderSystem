@@ -27,4 +27,9 @@
     <ProjectReference Include="../OrderSystem.Application/OrderSystem.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Domain/" />
+    <Folder Include="Domain/Entities/" />
+  </ItemGroup>
+
 </Project>

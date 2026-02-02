@@ -58,12 +58,11 @@ public class CreateOrderHandler(
                 throw new ProductNotFoundException();
 
 
-            OrderProduct orderProduct = new OrderProduct()
-            {
-                ProductId = product.Id,
-                Quantity = productDto.Quantity,
-                UnitPrice = product.Price
-            };
+            OrderProduct orderProduct = new(
+                product.Id,
+                product.Price,
+                productDto.Quantity
+            );
 
             order.AddProductOrder(orderProduct);
 

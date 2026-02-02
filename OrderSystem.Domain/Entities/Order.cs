@@ -50,8 +50,6 @@ public class Order : Entity
         this.UserEmail = userEmail;
     }
 
-
-
     public void AddProductOrder(OrderProduct productOrder)
     {
         if (productOrder is null)
@@ -63,7 +61,15 @@ public class Order : Entity
         if (productOrder.UnitPrice <= 0)
             throw new AddProductOrderException("productOrder UnitPrice must be bigger then zero");
 
+        if (ProductExistsInOrder(productOrder.ProductId))
+            throw new AddProductOrderException("ProductId already exists in productOrder");
 
         OrderProducts.Add(productOrder);
+    }
+
+    private bool ProductExistsInOrder(Guid productId)
+    {
+        // "Existe algum produto onde o ID seja igual ao productId?"
+        return OrderProducts.Any(x => x.ProductId == productId);
     }
 }
