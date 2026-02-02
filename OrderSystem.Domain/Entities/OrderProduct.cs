@@ -11,8 +11,11 @@ public class OrderProduct : Entity
     public decimal UnitPrice { get; set; }
     public int Quantity { get; set; }
 
-    public decimal Total()
+    public decimal Total
     {
-        return UnitPrice * Quantity;
+        get
+        {
+            return UnitPrice * Quantity;
+        }
     }
 }

@@ -10,5 +10,6 @@ public record class OrderDto
     public string UserName { get; set; } = string.Empty;
     public string UserEmail { get; set; } = string.Empty;
     public bool Active { get; set; }
+    public decimal Total { get; set; }
 
 }

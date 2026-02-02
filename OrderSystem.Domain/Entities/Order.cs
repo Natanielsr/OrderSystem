@@ -9,6 +9,20 @@ public class Order : Entity
     public string UserName { get; private set; } = string.Empty;
     public string UserEmail { get; private set; } = string.Empty;
 
+    public decimal Total
+    {
+        get
+        {
+            decimal total = 0;
+            foreach (OrderProduct p in OrderProducts)
+            {
+                total += p.Total;
+            }
+
+            return total;
+        }
+    }
+
     protected Order() { }
 
     public Order(Guid id) : base(id)
@@ -34,16 +48,7 @@ public class Order : Entity
         this.UserEmail = userEmail;
     }
 
-    public decimal Total()
-    {
-        decimal total = 0;
-        foreach (OrderProduct p in OrderProducts)
-        {
-            total += p.Total();
-        }
 
-        return total;
-    }
 
     public void AddProductOrder(OrderProduct productOrder)
     {
