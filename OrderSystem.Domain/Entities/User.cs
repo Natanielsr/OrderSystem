@@ -5,10 +5,12 @@ namespace OrderSystem.Domain.Entities;
 
 public class User : Entity
 {
-    public string Username { get; private set; }
-    public string Email { get; private set; }
-    public string HashedPassword { get; private set; }
+    public string? Username { get; private set; }
+    public string? Email { get; private set; }
+    public string? HashedPassword { get; private set; }
     private IPasswordService? _passwordService;
+
+    protected User() { }
 
     public User(Guid id,
         string username,
