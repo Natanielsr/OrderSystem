@@ -2,10 +2,10 @@ using OrderSystem.Domain.Repository;
 
 namespace OrderSystem.Domain.UnitOfWork;
 
-public interface IOrderUnitOfWork : IDisposable
+public interface IOrderUnitOfWork : IUnitOfWork
 {
     IOrderRepository orderRepository { get; }
     IProductRepository productRepository { get; }
 
-    Task<bool> CommitAsync();
+
 }
