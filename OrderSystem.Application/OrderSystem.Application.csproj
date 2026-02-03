@@ -13,10 +13,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="DependencyInjection/" />
+    <Folder Include="DTOs/Order/" />
+    <Folder Include="DTOs/User/" />
     <Folder Include="Mappings/" />
     <Folder Include="Orders/Queries/" />
     <Folder Include="Orders/Queries/GetOrderById/" />
     <Folder Include="Orders/Queries/ListOrders/" />
+    <Folder Include="Users/" />
+    <Folder Include="Users/Commands/" />
+    <Folder Include="Users/Commands/CreateUser/" />
   </ItemGroup>
 
   <PropertyGroup>
