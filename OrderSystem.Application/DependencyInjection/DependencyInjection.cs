@@ -1,0 +1,34 @@
+using System;
+using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
+using OrderSystem.Application.Mappings;
+using OrderSystem.Application.Orders.Commands.CreateOrder;
+using OrderSystem.Application.Orders.Queries.ListOrders;
+using OrderSystem.Application.Validator;
+
+namespace OrderSystem.Application.DependencyInjection;
+
+public static class DependencyInjection
+{
+    public static IServiceCollection AddApplication(this IServiceCollection services)
+    {
+
+        // Registra todos os validators do assembly
+        services.AddValidatorsFromAssemblyContaining<CreateOrderValidator>();
+
+        // Isso fará o AutoMapper procurar por qualquer classe que herde de 'Profile' 
+        // no assembly onde o seu MappingProfile (ou qualquer classe da Application) está.
+        services.AddAutoMapper(typeof(OrderMappingProfile).Assembly);
+        services.AddAutoMapper(typeof(UserMappingProfile).Assembly);
+
+        // Configura o MediatR e adiciona o Behavior
+        services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssembly(typeof(CreateOrderCommand).Assembly);
+            cfg.RegisterServicesFromAssembly(typeof(ListOrdersQuery).Assembly);
+            cfg.AddOpenBehavior(typeof(CreateOrderValidationBehavior<,>));
+        });
+
+        return services;
+    }
+}
