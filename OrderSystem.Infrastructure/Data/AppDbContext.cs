@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using OrderSystem.Domain.Entities;
+using OrderSystem.Infrastructure.Services;
 
 namespace OrderSystem.Infrastructure.Data;
 
@@ -17,14 +18,8 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // Use GUIDs fixos para que não mudem a cada execução
-        var userId = Guid.Parse("d268846c-76d3-4556-9d22-19e48f4989e2");
         var p1Id = Guid.Parse("868d8763-125c-4384-8149-c12e52e50529");
         var p2Id = Guid.Parse("671b4025-a134-45e0-9e67-0c7f1a308967");
-
-        modelBuilder.Entity<User>().HasData(
-            new User(userId, "UserTest", "usertest@email.com", "password")
-        );
 
         modelBuilder.Entity<Product>().HasData(
             new Product(p1Id, "Product1", 10m, 10),
