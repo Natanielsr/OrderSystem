@@ -1,7 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OrderSystem.Domain.Repository;
+using OrderSystem.Domain.UnitOfWork;
 using OrderSystem.Infrastructure.Data;
+using OrderSystem.Infrastructure.Repository.EntityFramework;
+using OrderSystem.Infrastructure.UnitOfWork;
 
 namespace OrderSystem.Infrastructure;
 
@@ -14,6 +18,12 @@ public static class DependecyInjection
                 configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly("OrderSystem.Infrastructure") // IMPORTANTE: Define onde as migrações serão salvas
             ));
+
+
+        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IOrderUnitOfWork, OrderUnitOfWork>();
 
         return services;
     }
