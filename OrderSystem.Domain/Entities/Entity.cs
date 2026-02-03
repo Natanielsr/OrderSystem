@@ -22,16 +22,15 @@ public abstract class Entity
         this.Active = active;
     }
 
-    public void SetNewEntity()
-    {
-        Id = Guid.NewGuid();
-        SetDefaultEntityProps();
-    }
-
     public void SetDefaultEntityProps()
     {
         CreationDate = DateTimeOffset.UtcNow;
         UpdateDate = DateTimeOffset.UtcNow;
         Active = true;
+    }
+
+    public void RenewUpdateDate()
+    {
+        UpdateDate = DateTimeOffset.UtcNow;
     }
 }

@@ -18,7 +18,6 @@ public class CreateOrderHandler(
     public async Task<CreateOrderResponseDto> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
         Order order = mapper.Map<Order>(request);
-        order.SetNewEntity();
 
         var isValid = await isValidUser(order.UserId);
         if (!isValid)
@@ -63,6 +62,8 @@ public class CreateOrderHandler(
                 product.Price,
                 productDto.Quantity
             );
+
+            orderProduct.SetDefaultEntityProps();
 
             order.AddProductOrder(orderProduct);
 
