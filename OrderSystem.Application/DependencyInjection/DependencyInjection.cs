@@ -1,6 +1,7 @@
 using System;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using OrderSystem.Application.Behaviors;
 using OrderSystem.Application.Mappings;
 using OrderSystem.Application.Orders.Commands.CreateOrder;
 using OrderSystem.Application.Orders.Queries.ListOrders;
@@ -26,7 +27,7 @@ public static class DependencyInjection
         {
             cfg.RegisterServicesFromAssembly(typeof(CreateOrderCommand).Assembly);
             cfg.RegisterServicesFromAssembly(typeof(ListOrdersQuery).Assembly);
-            cfg.AddOpenBehavior(typeof(CreateOrderValidationBehavior<,>));
+            cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
 
         return services;
