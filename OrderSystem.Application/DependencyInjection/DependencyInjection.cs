@@ -5,6 +5,7 @@ using OrderSystem.Application.Behaviors;
 using OrderSystem.Application.Mappings;
 using OrderSystem.Application.Orders.Commands.CreateOrder;
 using OrderSystem.Application.Orders.Queries.ListOrders;
+using OrderSystem.Application.Users.Commands.Auth;
 using OrderSystem.Application.Validator;
 
 namespace OrderSystem.Application.DependencyInjection;
@@ -27,6 +28,7 @@ public static class DependencyInjection
         {
             cfg.RegisterServicesFromAssembly(typeof(CreateOrderCommand).Assembly);
             cfg.RegisterServicesFromAssembly(typeof(ListOrdersQuery).Assembly);
+            cfg.RegisterServicesFromAssembly(typeof(AuthCommand).Assembly);
             cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
 
