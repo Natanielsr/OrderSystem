@@ -23,7 +23,7 @@ public class AppDbContext : DbContext
         var p2Id = Guid.Parse("671b4025-a134-45e0-9e67-0c7f1a308967");
 
         modelBuilder.Entity<User>().HasData(
-            new User(userId) { Name = "UserTest", Email = "usertest@email.com" }
+            new User(userId, "UserTest", "usertest@email.com", "password")
         );
 
         modelBuilder.Entity<Product>().HasData(
