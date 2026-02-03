@@ -25,6 +25,7 @@ public class CreateOrderHandler(
 
         order = await addProducts(request.OrderProducts, order);
 
+        order.SetDefaultEntityProps();
         Order createdOrder = (Order)await orderUnitOfWork.orderRepository.AddAsync(order);
         var success = await orderUnitOfWork.CommitAsync();
 
