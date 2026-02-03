@@ -30,9 +30,19 @@ public class UserRepositoryTEST : IUserRepository
         throw new NotImplementedException();
     }
 
+    public Task<User> GeByUserNameAsync(string username)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<IEnumerable<Entity>> GetAllAsync()
     {
         return users;
+    }
+
+    public Task<User> GetByEmailAsync(string email)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task<Entity> GetByIdAsync(Guid id)
