@@ -1,5 +1,5 @@
 using FluentValidation;
-using OrderSystem.Application.DTOs;
+using OrderSystem.Application.DTOs.Order;
 using OrderSystem.Application.Orders.Commands.CreateOrder;
 
 namespace OrderSystem.Application.Validator;

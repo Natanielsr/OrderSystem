@@ -1,5 +1,5 @@
 using AutoMapper;
-using OrderSystem.Application.DTOs;
+using OrderSystem.Application.DTOs.Order;
 using OrderSystem.Application.Orders.Commands.CreateOrder;
 using OrderSystem.Domain.Entities;
 

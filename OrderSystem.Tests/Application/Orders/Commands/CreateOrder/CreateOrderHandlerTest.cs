@@ -1,6 +1,6 @@
 using AutoMapper;
 using Moq;
-using OrderSystem.Application.DTOs;
+using OrderSystem.Application.DTOs.Order;
 using OrderSystem.Application.Mappings;
 using OrderSystem.Application.Orders.Commands.CreateOrder;
 using OrderSystem.Domain.Entities;
