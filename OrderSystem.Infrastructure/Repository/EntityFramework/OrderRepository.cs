@@ -10,6 +10,9 @@ public class OrderRepository(AppDbContext context) : IOrderRepository
 {
     public async Task<Entity> AddAsync(Entity entity)
     {
+        Order order = (Order)entity;
+        order.SetDefaultEntityProps();
+
         await context.Orders.AddAsync((Order)entity);
 
         return entity;
@@ -30,7 +33,10 @@ public class OrderRepository(AppDbContext context) : IOrderRepository
 
     public async Task<IEnumerable<Entity>> GetAllAsync()
     {
-        return await context.Orders.AsNoTracking().ToListAsync();
+        return await context.Orders
+            .Include(o => o.OrderProducts)
+            .AsNoTracking()
+            .ToListAsync();
     }
 
     public async Task<Entity> GetByIdAsync(Guid id)
@@ -45,6 +51,7 @@ public class OrderRepository(AppDbContext context) : IOrderRepository
 
         if (order != null)
         {
+            order.RenewUpdateDate();
             order = (Order)updatedEntity;
         }
 

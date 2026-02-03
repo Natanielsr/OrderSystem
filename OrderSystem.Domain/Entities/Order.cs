@@ -64,6 +64,7 @@ public class Order : Entity
         if (ProductExistsInOrder(productOrder.ProductId))
             throw new AddProductOrderException("ProductId already exists in productOrder");
 
+        productOrder.SetDefaultEntityProps();
         OrderProducts.Add(productOrder);
     }
 
