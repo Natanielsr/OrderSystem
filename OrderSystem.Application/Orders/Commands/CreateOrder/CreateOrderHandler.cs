@@ -1,6 +1,6 @@
 using AutoMapper;
 using MediatR;
-using OrderSystem.Application.DTOs;
+using OrderSystem.Application.DTOs.Order;
 using OrderSystem.Domain.Entities;
 using OrderSystem.Domain.Exceptions;
 using OrderSystem.Domain.Repository;

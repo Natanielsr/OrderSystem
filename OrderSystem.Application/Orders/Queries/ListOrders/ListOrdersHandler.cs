@@ -1,6 +1,6 @@
 using AutoMapper;
 using MediatR;
-using OrderSystem.Application.DTOs;
+using OrderSystem.Application.DTOs.Order;
 using OrderSystem.Domain.Repository;
 
 namespace OrderSystem.Application.Orders.Queries.ListOrders;

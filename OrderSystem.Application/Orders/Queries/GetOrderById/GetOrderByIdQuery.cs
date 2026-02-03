@@ -1,5 +1,5 @@
 using MediatR;
-using OrderSystem.Application.DTOs;
+using OrderSystem.Application.DTOs.Order;
 
 namespace OrderSystem.Application.Orders.Queries.GetOrderById;
 

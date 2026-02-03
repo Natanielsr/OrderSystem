@@ -1,4 +1,4 @@
-namespace OrderSystem.Application.DTOs;
+namespace OrderSystem.Application.DTOs.Order;
 
 public record class CreateOrderProductDto
 {
