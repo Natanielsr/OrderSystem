@@ -22,6 +22,7 @@ public class CreateUserHandler(
         user.SetDefaultEntityProps();
         user.SetPasswordService(passwordService);
         user.HashPassword(request.Password);
+        user.SetNormalUserRole();
 
         var response = await userRepository.AddAsync(user);
         await unitOfWork.CommitAsync();

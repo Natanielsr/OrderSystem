@@ -64,6 +64,11 @@ public class User : Entity
         this.Role = role;
     }
 
+    public void SetNormalUserRole()
+    {
+        Role = UserRole.User;
+    }
+
     public void SetPasswordService(IPasswordService passwordService)
     {
         _passwordService = passwordService;
