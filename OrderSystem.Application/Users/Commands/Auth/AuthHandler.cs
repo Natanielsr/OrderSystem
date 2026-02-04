@@ -18,7 +18,7 @@ public class AuthHandler(
 {
     public async Task<AuthResponseDto> Handle(AuthCommand request, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GeByUserNameAsync(request.username);
+        var user = await userRepository.GetByUserNameAsync(request.username);
         if (user == null)
             throw new UserNotFoundException();
 
