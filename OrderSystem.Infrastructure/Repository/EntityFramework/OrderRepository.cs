@@ -41,7 +41,11 @@ public class OrderRepository(AppDbContext context) : IOrderRepository
 
     public async Task<Entity> GetByIdAsync(Guid id)
     {
-        var order = await context.Orders.FindAsync(id);
+        var order = await context.Orders
+            .Include(o => o.OrderProducts)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(o => o.Id == id);
+
         return order!;
     }
 
