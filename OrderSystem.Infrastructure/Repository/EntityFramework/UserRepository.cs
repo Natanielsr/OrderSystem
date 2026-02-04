@@ -27,7 +27,7 @@ public class UserRepository(AppDbContext context) : IUserRepository
         return false;
     }
 
-    public async Task<User> GeByUserNameAsync(string username)
+    public async Task<User> GetByUserNameAsync(string username)
     {
         var user = await context.Users
             .AsNoTracking()
@@ -52,7 +52,10 @@ public class UserRepository(AppDbContext context) : IUserRepository
 
     public async Task<Entity> GetByIdAsync(Guid id)
     {
-        var order = await context.Users.FindAsync(id);
+        var order = await context.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Id == id);
+
         return order!;
     }
 

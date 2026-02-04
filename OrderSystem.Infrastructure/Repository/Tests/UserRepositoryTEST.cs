@@ -30,7 +30,7 @@ public class UserRepositoryTEST : IUserRepository
         throw new NotImplementedException();
     }
 
-    public Task<User> GeByUserNameAsync(string username)
+    public Task<User> GetByUserNameAsync(string username)
     {
         throw new NotImplementedException();
     }
