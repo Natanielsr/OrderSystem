@@ -45,6 +45,7 @@ public class ProductRepository(AppDbContext context) : IProductRepository
         if (product != null)
         {
             product = (Product)updatedEntity;
+            product.RenewUpdateDate();
         }
 
         return product!;
