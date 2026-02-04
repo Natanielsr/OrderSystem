@@ -18,10 +18,6 @@ namespace OrderSystem.API.Controllers
         [Authorize]
         public async Task<IActionResult> Create([FromBody] CreateOrderCommand createOrderCommand)
         {
-            //bool IsAuthenticated = User?.Identity?.IsAuthenticated == true;
-            //if (!IsAuthenticated)
-            //    return Unauthorized("unauthenticated user");
-
             var userId = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (Guid.TryParse(userId, out Guid result))
             {
