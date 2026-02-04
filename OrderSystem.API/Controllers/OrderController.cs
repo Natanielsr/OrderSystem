@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrderSystem.Application.DTOs.Order;
 using OrderSystem.Application.Orders.Commands.CreateOrder;
@@ -13,8 +15,24 @@ namespace OrderSystem.API.Controllers
     {
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody] CreateOrderCommand createOrderCommand)
         {
+            //bool IsAuthenticated = User?.Identity?.IsAuthenticated == true;
+            //if (!IsAuthenticated)
+            //    return Unauthorized("unauthenticated user");
+
+            var userId = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (Guid.TryParse(userId, out Guid result))
+            {
+                if (result != createOrderCommand.UserId)
+                    return Unauthorized("the request user id is different from the authenticated user");
+            }
+            else
+            {
+                return Unauthorized("the authenticated id is not a valid guid");
+            }
+
             CreateOrderResponseDto response = await mediator.Send(createOrderCommand);
 
             return CreatedAtRoute("GetOrderById", new { id = response.Id }, response);
