@@ -33,4 +33,9 @@ public abstract class Entity
     {
         UpdateDate = DateTimeOffset.UtcNow;
     }
+
+    public void SetActive()
+    {
+        Active = true;
+    }
 }

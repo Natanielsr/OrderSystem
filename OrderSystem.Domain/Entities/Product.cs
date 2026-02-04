@@ -22,6 +22,7 @@ public class Product : Entity
         this.Name = name;
         this.Price = price;
         this.AvailableQuantity = availableQuantity;
+        SetActive();
     }
 
     public Product(
