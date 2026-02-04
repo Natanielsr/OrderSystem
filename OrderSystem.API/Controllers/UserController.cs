@@ -19,14 +19,6 @@ namespace OrderSystem.API.Controllers
         }
 
 
-        [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody] AuthCommand login)
-        {
-            var response = await mediator.Send(login);
-            return Ok(response);
-        }
-
-
         [HttpGet("{id:guid}", Name = "GetUserById")]
         public async Task<IActionResult> GetById(Guid id)
         {

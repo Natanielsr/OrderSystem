@@ -2,6 +2,7 @@ using System;
 using AutoMapper;
 using MediatR;
 using OrderSystem.Application.DTOs.User;
+using OrderSystem.Application.Services;
 using OrderSystem.Domain.Exceptions;
 using OrderSystem.Domain.Repository;
 using OrderSystem.Domain.Services;
@@ -11,7 +12,8 @@ namespace OrderSystem.Application.Users.Commands.Auth;
 public class AuthHandler(
     IUserRepository userRepository,
     IPasswordService passwordService,
-    IMapper mapper
+    IMapper mapper,
+    ITokenService tokenService
     ) : IRequestHandler<AuthCommand, AuthResponseDto>
 {
     public async Task<AuthResponseDto> Handle(AuthCommand request, CancellationToken cancellationToken)
@@ -22,10 +24,10 @@ public class AuthHandler(
 
         var isPasswordCorrect = passwordService.VerifyPassowrd(request.password, user.HashedPassword!);
         if (!isPasswordCorrect)
-            throw new Exception("password incorrect");
+            throw new InvalidPasswordException();
 
         AuthResponseDto authResponseDto = mapper.Map<AuthResponseDto>(user);
-        authResponseDto.Token = Guid.NewGuid().ToString(); //lógica para criar token
+        authResponseDto.Token = tokenService.GenerateToken(user); //lógica para criar token
 
         return authResponseDto;
     }

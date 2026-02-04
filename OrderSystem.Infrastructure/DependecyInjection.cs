@@ -1,6 +1,10 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using OrderSystem.Application.Services;
 using OrderSystem.Domain.Repository;
 using OrderSystem.Domain.Services;
 using OrderSystem.Domain.UnitOfWork;
@@ -27,8 +31,28 @@ public static class DependecyInjection
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IOrderUnitOfWork, OrderUnitOfWork>();
         services.AddScoped<IUnitOfWork, UnitOfWorkEf>();
-
+        services.AddScoped<ITokenService, JWTTokenService>();
         services.AddScoped<IPasswordService, PasswordService>();
+
+        //jwt 
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = configuration["Jwt:Issuer"],
+                ValidAudience = configuration["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:key"]!))
+            };
+        });
 
         return services;
     }
