@@ -2,6 +2,7 @@ using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OrderSystem.API.Security;
 using OrderSystem.Application.Authorization;
 using OrderSystem.Application.DTOs.Order;
 using OrderSystem.Application.Orders.Commands.CreateOrder;
@@ -20,7 +21,7 @@ namespace OrderSystem.API.Controllers
         [Authorize]
         public async Task<IActionResult> Create([FromBody] CreateOrderCommand createOrderCommand)
         {
-            var userClaim = createClaim();
+            var userClaim = APIClaim.createUserClaim(User);
             var authorizationResponse = OrderAuthorization.CreateOrder(userClaim, createOrderCommand);
             if (!authorizationResponse.Success)
             {
@@ -32,6 +33,7 @@ namespace OrderSystem.API.Controllers
             return CreatedAtRoute("GetOrderById", new { id = response.Id }, response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -47,7 +49,7 @@ namespace OrderSystem.API.Controllers
             if (response == null)
                 return NotFound("Order Not Found");
 
-            var userClaim = createClaim();
+            var userClaim = APIClaim.createUserClaim(User);
             var authorizationResponse = OrderAuthorization.GetById(userClaim, response);
             if (!authorizationResponse.Success)
             {
@@ -58,28 +60,6 @@ namespace OrderSystem.API.Controllers
 
         }
 
-        UserClaim createClaim()
-        {
-            var userId = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var email = User?.FindFirst(ClaimTypes.Email)?.Value;
-            var username = User?.FindFirst(ClaimTypes.Name)?.Value;
-            var role = User?.FindFirst(ClaimTypes.Role)?.Value;
 
-            if (userId == null)
-                throw new NullReferenceException("Null UserId Claim");
-
-            if (email == null)
-                throw new NullReferenceException("Null email Claim");
-
-            if (username == null)
-                throw new NullReferenceException("Null username Claim");
-
-            if (role == null)
-                throw new NullReferenceException("Null role Claim");
-
-            UserClaim userClaim = new UserClaim() { Id = userId, Email = email, Username = username, Role = role };
-
-            return userClaim;
-        }
     }
 }
