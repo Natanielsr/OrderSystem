@@ -1,6 +1,6 @@
 # Para Criar uma Migração
 dotnet ef migrations add NomeDaMigration --project NomeDaInfra --startup-project NomeDaAPI
-dotnet ef migrations add AddUserPropsInSeed --project OrderSystem.Infrastructure --startup-project OrderSystem.API
+dotnet ef migrations add AddUserRoleField --project OrderSystem.Infrastructure --startup-project OrderSystem.API
 
 dotnet ef migrations list --project OrderSystem.Infrastructure  --startup-project OrderSystem.API
 dotnet ef migrations remove --project OrderSystem.Infrastructure  --startup-project OrderSystem.API
