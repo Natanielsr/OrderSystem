@@ -88,7 +88,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.UseStaticFiles(); // Isso libera o acesso à pasta wwwroot
 
 app.Run();
 
