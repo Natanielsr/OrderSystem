@@ -10,7 +10,11 @@ public class CreateUserValidator : AbstractValidator<CreateUserCommand>
     {
         RuleFor(u => u.Username)
             .NotNull().WithMessage("username can´t be null")
-            .NotEmpty().WithMessage("username can´t be empty");
+            .NotEmpty().WithMessage("Username is required.")
+            .MinimumLength(3).WithMessage("Username must be at least 3 characters long.")
+            .MaximumLength(20).WithMessage("Username cannot exceed 20 characters.")
+            .Matches(@"^[a-zA-Z0-9._]+$").WithMessage("Username can only contain letters, numbers, dots (.), and underscores (_).")
+            .Must(NotStartOrEndWithSpecialChar).WithMessage("Username cannot start or end with special characters.");
 
         RuleFor(u => u.Email)
             .NotNull().WithMessage("email can´t be null")
@@ -28,5 +32,15 @@ public class CreateUserValidator : AbstractValidator<CreateUserCommand>
         RuleFor(x => x.ConfirmPassword)
             .Equal(x => x.Password).WithMessage("Passwords do not match.");
 
+    }
+
+    private bool NotStartOrEndWithSpecialChar(string username)
+    {
+        if (string.IsNullOrEmpty(username)) return true;
+
+        char first = username[0];
+        char last = username[username.Length - 1];
+
+        return char.IsLetterOrDigit(first) && char.IsLetterOrDigit(last);
     }
 }
