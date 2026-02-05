@@ -7,6 +7,7 @@ using OrderSystem.Application.Orders.Commands.CreateOrder;
 using OrderSystem.Application.Orders.Queries.ListOrders;
 using OrderSystem.Application.Users.Commands.Auth;
 using OrderSystem.Application.Validator;
+using OrderSystem.Domain.Entities;
 
 namespace OrderSystem.Application.DependencyInjection;
 
@@ -22,6 +23,7 @@ public static class DependencyInjection
         // no assembly onde o seu MappingProfile (ou qualquer classe da Application) está.
         services.AddAutoMapper(typeof(OrderMappingProfile).Assembly);
         services.AddAutoMapper(typeof(UserMappingProfile).Assembly);
+        services.AddAutoMapper(typeof(ProductMappingProfile).Assembly);
 
         // Configura o MediatR e adiciona o Behavior
         services.AddMediatR(cfg =>
