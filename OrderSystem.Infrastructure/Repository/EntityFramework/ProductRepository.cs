@@ -34,7 +34,10 @@ public class ProductRepository(AppDbContext context) : IProductRepository
 
     public async Task<Entity> GetByIdAsync(Guid id)
     {
-        var order = await context.Products.FindAsync(id);
+        var order = await context.Products
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.Id == id);
+
         return order!;
     }
 
