@@ -3,7 +3,9 @@ using AutoMapper;
 using MediatR;
 using OrderSystem.Application.DTOs.Product;
 using OrderSystem.Application.Services;
+using OrderSystem.Application.Validator;
 using OrderSystem.Domain.Entities;
+using OrderSystem.Domain.Exceptions;
 using OrderSystem.Domain.Repository;
 using OrderSystem.Domain.UnitOfWork;
 
@@ -20,6 +22,14 @@ public class CreateProductHandler(
     {
         Product product = mapper.Map<Product>(request);
         product.SetDefaultEntityProps();
+
+        var IsValidImage = ImageValidator.IsValidImage(
+            request.FileStream,
+            request.FileName,
+            request.ContentType);
+
+        if (!IsValidImage)
+            throw new NotValidImageException();
 
         string filePath = await storageService.UploadFileAsync(request.FileStream, request.FileName);
         product.ImagePath = filePath;
