@@ -19,9 +19,12 @@ public class CreateOrderHandler(
     {
         Order order = mapper.Map<Order>(request);
 
-        var isValid = await isValidUser(order.UserId);
-        if (!isValid)
+        var user = await GetUser(order.UserId);
+        if (user == null)
             throw new UserNotFoundException();
+
+        order.SetUsername(user.Username);
+        order.SetEmail(user.Email);
 
         order = await addProducts(request.OrderProducts, order);
 
@@ -37,13 +40,9 @@ public class CreateOrderHandler(
         return createOrderResponseDto;
     }
 
-    private async Task<bool> isValidUser(Guid userId)
+    private async Task<User> GetUser(Guid userId)
     {
-        User user = (User)await userRepository.GetByIdAsync(userId);
-        if (user is null)
-            return false;
-        else
-            return true;
+        return (User)await userRepository.GetByIdAsync(userId);
     }
 
     private async Task<Order> addProducts(List<CreateOrderProductDto> createOrderProductDtos, Order order)

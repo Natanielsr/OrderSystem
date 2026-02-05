@@ -1,3 +1,4 @@
+using System.Dynamic;
 using OrderSystem.Domain.Exceptions;
 
 namespace OrderSystem.Domain.Entities;
@@ -6,8 +7,7 @@ public class Order : Entity
 {
     public List<OrderProduct> OrderProducts { get; private set; } = new List<OrderProduct>();
     public Guid UserId { get; private set; }
-    public User? OrderUser { get; private set; }
-
+    public User? User { get; set; }
     public string UserName { get; private set; } = string.Empty;
     public string UserEmail { get; private set; } = string.Empty;
 
@@ -38,16 +38,17 @@ public class Order : Entity
         bool active,
         List<OrderProduct> orderProducts,
         Guid userId,
-        User orderUser,
+        User user,
         string userName,
         string userEmail
 
         ) : base(id, creationDate, updateDate, active)
     {
         this.UserId = userId;
-        this.OrderUser = orderUser;
+        this.User = user;
         this.UserName = userName;
         this.UserEmail = userEmail;
+        this.OrderProducts = orderProducts;
     }
 
     public void AddProductOrder(OrderProduct productOrder)
@@ -73,4 +74,21 @@ public class Order : Entity
         // "Existe algum produto onde o ID seja igual ao productId?"
         return OrderProducts.Any(x => x.ProductId == productId);
     }
+
+    public void SetUsername(string? username)
+    {
+        if (username == null)
+            throw new NullReferenceException("username is null");
+
+        UserName = username;
+    }
+
+    public void SetEmail(string? email)
+    {
+        if (email == null)
+            throw new NullReferenceException("email is null");
+
+        UserEmail = email;
+    }
+
 }
