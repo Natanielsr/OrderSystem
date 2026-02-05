@@ -309,6 +309,7 @@ _pkginfo.txt
 **/*.db
 **/*.sqlite
 **/*.sqlite3
+**/wwwroot
 
 ############################
 # SO
