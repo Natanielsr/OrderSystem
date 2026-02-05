@@ -34,7 +34,8 @@ namespace OrderSystem.API.Controllers
                 productInput.Price,
                 productInput.AvailableQuantity,
                 stream,
-                productInput.Image.FileName
+                productInput.Image.FileName,
+                productInput.Image.ContentType
             );
 
             var response = await mediator.Send(createProductCommand);
