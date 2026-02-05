@@ -2,6 +2,8 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OrderSystem.Application.Products.Commands.CreateProduct;
+using OrderSystem.Application.Products.Queries.GetAll;
+using OrderSystem.Application.Products.Queries.GetById;
 using OrderSystem.Domain.Entities;
 using OrderSystem.Domain.Repository;
 
@@ -19,7 +21,6 @@ namespace OrderSystem.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController(
-        IProductRepository productRepository,
         IMediator mediator
         ) : ControllerBase
     {
@@ -44,16 +45,15 @@ namespace OrderSystem.API.Controllers
         [HttpGet("{id:guid}", Name = "GetById")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var result = await productRepository.GetByIdAsync(id);
+            var result = await mediator.Send(new GetProductByIdQuery(id));
             return Ok(result);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var result = await productRepository.GetAllAsync();
-            var products = result.Select(e => (Product)e);
-            return Ok(products);
+            var result = await mediator.Send(new GetAllProductsQuery());
+            return Ok(result);
         }
     }
 }
