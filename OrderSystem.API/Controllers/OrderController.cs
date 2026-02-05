@@ -33,7 +33,7 @@ namespace OrderSystem.API.Controllers
             return CreatedAtRoute("GetOrderById", new { id = response.Id }, response);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = UserRole.Admin)]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
