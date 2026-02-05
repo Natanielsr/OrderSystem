@@ -22,9 +22,8 @@
     <Folder Include="Orders/Queries/" />
     <Folder Include="Orders/Queries/GetOrderById/" />
     <Folder Include="Orders/Queries/ListOrders/" />
-    <Folder Include="Products/" />
-    <Folder Include="Products/Commands/" />
     <Folder Include="Products/Commands/CreateProduct/" />
+    <Folder Include="Products/Queries/GetById/" />
     <Folder Include="Services/" />
     <Folder Include="Users/Commands/CreateUser/" />
   </ItemGroup>
