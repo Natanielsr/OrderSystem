@@ -8,7 +8,8 @@ public record class CreateProductCommand(
     decimal Price,
     int AvailableQuantity,
     Stream FileStream,
-    string FileName
+    string FileName,
+    string ContentType
     ) : IRequest<CreateProductResponseDto>
 {
 
