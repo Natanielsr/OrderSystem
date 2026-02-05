@@ -33,6 +33,7 @@ public static class DependecyInjection
         services.AddScoped<IUnitOfWork, UnitOfWorkEf>();
         services.AddScoped<ITokenService, JWTTokenService>();
         services.AddScoped<IPasswordService, PasswordService>();
+        services.AddScoped<IStorageService, LocalStorageService>();
 
         //jwt 
         services.AddAuthentication(options =>

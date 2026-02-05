@@ -10,6 +10,8 @@ public class Product : Entity
 
     public int AvailableQuantity { get; private set; }
 
+    public string ImagePath { get; set; } = string.Empty;
+
     protected Product() { }
 
     public Product(
