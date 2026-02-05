@@ -12,5 +12,6 @@ public class ProductMappingProfile : Profile
     {
         CreateMap<CreateProductCommand, Product>();
         CreateMap<Product, CreateProductResponseDto>();
+        CreateMap<Product, ProductDto>();
     }
 }
