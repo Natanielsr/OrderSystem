@@ -49,6 +49,15 @@ builder.Services.AddControllers(options =>
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MinhaAppNextJS", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000") // URL do seu Next.js
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
@@ -80,6 +89,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// --- 2. Habilitar o CORS ---
+// Importante: UseCors deve vir antes de UseAuthorization e depois de UseRouting
+app.UseCors("MinhaAppNextJS");
 
 
 app.UseHttpsRedirection();
