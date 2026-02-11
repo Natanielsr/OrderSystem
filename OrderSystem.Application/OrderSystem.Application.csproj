@@ -25,6 +25,7 @@
     <Folder Include="Products/Commands/CreateProduct/" />
     <Folder Include="Products/Queries/GetById/" />
     <Folder Include="Services/" />
+    <Folder Include="Users/Commands/AuthEmail/" />
     <Folder Include="Users/Commands/CreateUser/" />
   </ItemGroup>
 
