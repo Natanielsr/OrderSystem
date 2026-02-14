@@ -8,6 +8,7 @@ using OrderSystem.Application.DTOs.Order;
 using OrderSystem.Application.Orders.Commands.CreateOrder;
 using OrderSystem.Application.Orders.Queries.GetOrderById;
 using OrderSystem.Application.Orders.Queries.ListOrders;
+using OrderSystem.Application.Orders.Queries.ListUserOrders;
 using OrderSystem.Domain.Entities;
 
 namespace OrderSystem.API.Controllers
@@ -25,7 +26,7 @@ namespace OrderSystem.API.Controllers
             var authorizationResponse = OrderAuthorization.CreateOrder(userClaim, createOrderCommand);
             if (!authorizationResponse.Success)
             {
-                return Unauthorized(authorizationResponse.Message);
+                return StatusCode(403, authorizationResponse.Message);
             }
 
             CreateOrderResponseDto response = await mediator.Send(createOrderCommand);
@@ -42,8 +43,24 @@ namespace OrderSystem.API.Controllers
         }
 
         [Authorize]
-        [HttpGet("{id:guid}", Name = "GetOrderById")]
-        public async Task<IActionResult> GetById(Guid id)
+        [HttpGet("GetUserOrders")]
+        public async Task<IActionResult> GetUserOrders([FromQuery] Guid userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 5)
+        {
+            page = page <= 0 ? 1 : page;
+            pageSize = pageSize <= 0 ? 5 : pageSize;
+
+            var userClaim = APIClaim.createUserClaim(User);
+            var authorizationResponse = OrderAuthorization.GetUserOrders(userClaim, userId);
+            if (!authorizationResponse.Success)
+                return StatusCode(403, authorizationResponse.Message);
+
+            var response = await mediator.Send(new ListUserOrdersQuery(userId, page, pageSize));
+            return Ok(response);
+        }
+
+        [Authorize]
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById([FromQuery] Guid id)
         {
             OrderDto? response = await mediator.Send(new GetOrderByIdQuery(id));
             if (response == null)
@@ -53,13 +70,10 @@ namespace OrderSystem.API.Controllers
             var authorizationResponse = OrderAuthorization.GetById(userClaim, response);
             if (!authorizationResponse.Success)
             {
-                return Unauthorized(authorizationResponse.Message);
+                return StatusCode(403, authorizationResponse.Message);
             }
 
             return Ok(response);
-
         }
-
-
     }
 }
