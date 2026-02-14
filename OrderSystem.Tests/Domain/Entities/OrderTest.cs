@@ -17,7 +17,7 @@ public class OrderTest
         order.AddProductOrder(orderProduct2);
 
         //Act
-        var total = order.Total;
+        var total = order.CalcTotal;
 
         //Assert
         Assert.Equal(200m, total);
