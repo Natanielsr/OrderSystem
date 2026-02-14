@@ -23,6 +23,11 @@ public class OrderRepositoryTEST : IOrderRepository
         return orders;
     }
 
+    public Task<List<Order>> GetAllUserOrdersAsync(Guid UserId, int page, int pageSize)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<Entity> GetByIdAsync(Guid Id)
     {
         return orders.First(o => o.Id == Id);
