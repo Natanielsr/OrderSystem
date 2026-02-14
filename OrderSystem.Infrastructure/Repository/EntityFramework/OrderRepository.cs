@@ -39,6 +39,17 @@ public class OrderRepository(AppDbContext context) : IOrderRepository
             .ToListAsync();
     }
 
+    public async Task<List<Order>> GetAllUserOrdersAsync(Guid UserId, int page, int pageSize)
+    {
+        return await context.Orders
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .AsNoTracking()
+            .Where(o => o.UserId == UserId)
+            .ToListAsync();
+
+    }
+
     public async Task<Entity> GetByIdAsync(Guid id)
     {
         var order = await context.Orders
