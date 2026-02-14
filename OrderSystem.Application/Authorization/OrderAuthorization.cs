@@ -45,8 +45,22 @@ public static class OrderAuthorization
             return new AuthorizationResponse() { Success = true, Message = "Valid Guid" };
     }
 
+    public static AuthorizationResponse GetUserOrders(UserClaim userClaim, Guid userId)
+    {
+        Guid userIdClaim = getGuid(userClaim.Id);
 
-    static Guid getGuid(string id)
+        var validGuidResponse = ValidGuid(userClaim);
+        if (!validGuidResponse.Success)
+            return validGuidResponse;
+
+        if (userId != userIdClaim)
+            return new AuthorizationResponse() { Success = false, Message = "Order UserId is different from userIdClaim" };
+
+        return new AuthorizationResponse() { Success = true, Message = "UserOrders access allowed" };
+    }
+
+
+    public static Guid getGuid(string id)
     {
         if (Guid.TryParse(id, out Guid result))
         {
