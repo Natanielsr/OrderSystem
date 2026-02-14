@@ -42,10 +42,11 @@ public class OrderRepository(AppDbContext context) : IOrderRepository
     public async Task<List<Order>> GetAllUserOrdersAsync(Guid UserId, int page, int pageSize)
     {
         return await context.Orders
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
             .AsNoTracking()
             .Where(o => o.UserId == UserId)
+            .OrderByDescending(o => o.CreationDate)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
 
     }
