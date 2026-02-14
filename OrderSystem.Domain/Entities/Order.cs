@@ -11,7 +11,9 @@ public class Order : Entity
     public string UserName { get; private set; } = string.Empty;
     public string UserEmail { get; private set; } = string.Empty;
 
-    public decimal Total
+    public decimal Total { get; set; }
+
+    public decimal CalcTotal
     {
         get
         {
@@ -24,6 +26,7 @@ public class Order : Entity
             return total;
         }
     }
+
 
     protected Order() { }
 
