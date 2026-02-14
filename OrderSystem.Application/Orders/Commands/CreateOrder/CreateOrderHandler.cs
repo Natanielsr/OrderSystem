@@ -28,6 +28,9 @@ public class CreateOrderHandler(
 
         order = await addProducts(request.OrderProducts, order);
 
+        //save the calculation total
+        order.Total = order.CalcTotal;
+
         order.SetDefaultEntityProps();
         Order createdOrder = (Order)await orderUnitOfWork.orderRepository.AddAsync(order);
         var success = await orderUnitOfWork.CommitAsync();
