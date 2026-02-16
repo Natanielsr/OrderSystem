@@ -54,7 +54,8 @@ public class Order : Entity
         Guid userId,
         User user,
         string userName,
-        string userEmail
+        string userEmail,
+        PaymentMethod paymentMethod
 
         ) : base(id, creationDate, updateDate, active)
     {
@@ -63,6 +64,7 @@ public class Order : Entity
         this.UserName = userName;
         this.UserEmail = userEmail;
         this.OrderProducts = orderProducts;
+        this.PaymentMethod = paymentMethod;
     }
 
     public void AddProductOrder(OrderProduct productOrder)
