@@ -60,7 +60,7 @@ namespace OrderSystem.API.Controllers
 
         [Authorize]
         [HttpGet("{id:guid}", Name = "GetOrderById")]
-        public async Task<IActionResult> GetById([FromQuery] Guid id)
+        public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             OrderDto? response = await mediator.Send(new GetOrderByIdQuery(id));
             if (response == null)
