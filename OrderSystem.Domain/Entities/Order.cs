@@ -3,6 +3,14 @@ using OrderSystem.Domain.Exceptions;
 
 namespace OrderSystem.Domain.Entities;
 
+public enum OrderStatus
+{
+    Pending,
+    Paid,
+    Shipped,
+    Canceled
+}
+
 public class Order : Entity
 {
     public List<OrderProduct> OrderProducts { get; private set; } = new List<OrderProduct>();
@@ -10,8 +18,8 @@ public class Order : Entity
     public User? User { get; set; }
     public string UserName { get; private set; } = string.Empty;
     public string UserEmail { get; private set; } = string.Empty;
-
     public decimal Total { get; set; }
+    public OrderStatus Status { get; set; }
 
     public decimal CalcTotal
     {

@@ -23,15 +23,15 @@ public class CreateOrderHandler(
         if (user == null)
             throw new UserNotFoundException();
 
+        //set default order data
         order.SetUsername(user.Username);
         order.SetEmail(user.Email);
-
         order = await addProducts(request.OrderProducts, order);
-
         //save the calculation total
         order.Total = order.CalcTotal;
-
         order.SetDefaultEntityProps();
+        order.Status = OrderStatus.Pending;
+
         Order createdOrder = (Order)await orderUnitOfWork.orderRepository.AddAsync(order);
         var success = await orderUnitOfWork.CommitAsync();
 
