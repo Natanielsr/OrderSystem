@@ -20,7 +20,7 @@ public class Order : Entity
     public string UserEmail { get; private set; } = string.Empty;
     public decimal Total { get; set; }
     public OrderStatus Status { get; set; }
-    public List<PaymentInfo>? PaymentInfo { get; set; }
+    public List<PaymentInfo> PaymentInfo { get; set; } = new List<PaymentInfo>();
 
     public decimal CalcTotal
     {
