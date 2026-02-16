@@ -20,9 +20,7 @@ public class Order : Entity
     public string UserEmail { get; private set; } = string.Empty;
     public decimal Total { get; set; }
     public OrderStatus Status { get; set; }
-    public Guid PaymentInfoId { get; set; }
-    public PaymentInfo? PaymentInfo { get; set; }
-    public PaymentMethod PaymentMethod { get; private set; }
+    public List<PaymentInfo>? PaymentInfo { get; set; }
 
     public decimal CalcTotal
     {
@@ -54,8 +52,7 @@ public class Order : Entity
         Guid userId,
         User user,
         string userName,
-        string userEmail,
-        PaymentMethod paymentMethod
+        string userEmail
 
         ) : base(id, creationDate, updateDate, active)
     {
@@ -64,7 +61,6 @@ public class Order : Entity
         this.UserName = userName;
         this.UserEmail = userEmail;
         this.OrderProducts = orderProducts;
-        this.PaymentMethod = paymentMethod;
     }
 
     public void AddProductOrder(OrderProduct productOrder)
