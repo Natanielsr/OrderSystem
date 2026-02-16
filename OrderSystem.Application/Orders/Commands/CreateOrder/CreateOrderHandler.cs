@@ -32,6 +32,19 @@ public class CreateOrderHandler(
         order.SetDefaultEntityProps();
         order.Status = OrderStatus.Pending;
 
+        order.PaymentInfo.Add(new PaymentInfo(
+            Guid.NewGuid(),
+            DateTimeOffset.UtcNow,
+            DateTimeOffset.UtcNow,
+            true,
+            request.PaymentMethod,
+            order.Total,
+            "transaction_reference",
+            "last_four_digits",
+            "provider_name",
+            PaymentStatus.Pending
+        ));
+
         Order createdOrder = (Order)await orderUnitOfWork.orderRepository.AddAsync(order);
         var success = await orderUnitOfWork.CommitAsync();
 
