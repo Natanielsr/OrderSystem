@@ -9,8 +9,8 @@ public class OrderTest
     public void TotalTest()
     {
         //Arrange
-        OrderProduct orderProduct1 = new(Guid.NewGuid(), 10.00m, 10);
-        OrderProduct orderProduct2 = new(Guid.NewGuid(), 10.00m, 10);
+        OrderProduct orderProduct1 = new(Guid.NewGuid(), "Product1", 10.00m, 10);
+        OrderProduct orderProduct2 = new(Guid.NewGuid(), "Product2", 10.00m, 10);
 
         Order order = new Order(Guid.NewGuid());
         order.AddProductOrder(orderProduct1);

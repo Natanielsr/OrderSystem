@@ -9,7 +9,7 @@ public class OrderProductTest
     public void TestTotal()
     {
         //Arrange
-        OrderProduct orderProduct = new(Guid.NewGuid(), 10m, 10);
+        OrderProduct orderProduct = new(Guid.NewGuid(), "TestName", 10m, 10);
 
         //Act
         var total = orderProduct.Total;

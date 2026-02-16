@@ -82,6 +82,7 @@ public class CreateOrderHandlerTest
         {
             order.AddProductOrder(new(
                 product.Id,
+                product.Name,
                 product.Price,
                 product.AvailableQuantity));
         }

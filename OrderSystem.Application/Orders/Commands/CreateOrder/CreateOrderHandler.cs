@@ -62,6 +62,7 @@ public class CreateOrderHandler(
 
             OrderProduct orderProduct = new(
                 product.Id,
+                product.Name,
                 product.Price,
                 productDto.Quantity
             );
