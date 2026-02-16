@@ -2,6 +2,7 @@ namespace OrderSystem.Domain.Entities;
 
 public enum PaymentStatus
 {
+    Pending,
     Authorized,
     Captured,
     Refunded,
