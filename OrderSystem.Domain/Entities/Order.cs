@@ -22,6 +22,7 @@ public class Order : Entity
     public OrderStatus Status { get; set; }
     public Guid PaymentInfoId { get; set; }
     public PaymentInfo? PaymentInfo { get; set; }
+    public PaymentMethod PaymentMethod { get; private set; }
 
     public decimal CalcTotal
     {

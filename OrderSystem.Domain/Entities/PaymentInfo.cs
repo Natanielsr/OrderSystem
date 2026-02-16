@@ -1,11 +1,16 @@
-using System;
-
 namespace OrderSystem.Domain.Entities;
 
+public enum PaymentStatus
+{
+    Authorized,
+    Captured,
+    Refunded,
+    Failed
+}
 public class PaymentInfo : Entity
 {
     // Dados para o histórico (Snapshot)
-    public string Method { get; private set; } // "CreditCard", "Pix", "Boleto"
+    public PaymentMethod Method { get; private set; } // "CreditCard", "Pix", "Boleto"
     public decimal PaidAmount { get; private set; }
     // Rastreabilidade Externa
     public string TransactionReference { get; private set; } // O ID que vem do Gateway
@@ -13,7 +18,7 @@ public class PaymentInfo : Entity
     public string ProviderName { get; private set; }        // Ex: "Stripe", "Adyen"
 
     // Status do Pagamento (usando a dica da string que vimos antes)
-    public string PaymentStatus { get; private set; } // "Authorized", "Captured", "Refunded", "Failed"
+    public PaymentStatus Status { get; private set; } // "Authorized", "Captured", "Refunded", "Failed"
 
     public Guid OrderId { get; set; }
     public Order? Order { get; set; }
@@ -23,12 +28,12 @@ public class PaymentInfo : Entity
         DateTimeOffset CreationDate,
         DateTimeOffset UpdateDate,
         bool Active,
-        string Method,
+        PaymentMethod Method,
         decimal PaidAmount,
         string TransactionReference,
         string LastFourDigits,
         string ProviderName,
-        string PaymentStatus
+        PaymentStatus Status
         ) : base(Id, CreationDate, UpdateDate, Active)
     {
         this.Method = Method;
@@ -36,6 +41,6 @@ public class PaymentInfo : Entity
         this.TransactionReference = TransactionReference;
         this.LastFourDigits = LastFourDigits;
         this.ProviderName = ProviderName;
-        this.PaymentStatus = PaymentStatus;
+        this.Status = Status;
     }
 }
