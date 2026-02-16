@@ -15,6 +15,9 @@ public class PaymentInfo : Entity
     // Status do Pagamento (usando a dica da string que vimos antes)
     public string PaymentStatus { get; private set; } // "Authorized", "Captured", "Refunded", "Failed"
 
+    public Guid OrderId { get; set; }
+    public Order? Order { get; set; }
+
     public PaymentInfo(
         Guid Id,
         DateTimeOffset CreationDate,
