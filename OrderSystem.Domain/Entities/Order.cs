@@ -21,6 +21,7 @@ public class Order : Entity
     public decimal Total { get; set; }
     public OrderStatus Status { get; set; }
     public List<PaymentInfo> PaymentInfo { get; set; } = new List<PaymentInfo>();
+    public string? Code { get; private set; }
 
     public decimal CalcTotal
     {
@@ -52,7 +53,8 @@ public class Order : Entity
         Guid userId,
         User user,
         string userName,
-        string userEmail
+        string userEmail,
+        string code
 
         ) : base(id, creationDate, updateDate, active)
     {
@@ -61,6 +63,7 @@ public class Order : Entity
         this.UserName = userName;
         this.UserEmail = userEmail;
         this.OrderProducts = orderProducts;
+        this.Code = code;
     }
 
     public void AddProductOrder(OrderProduct productOrder)
@@ -101,6 +104,24 @@ public class Order : Entity
             throw new NullReferenceException("email is null");
 
         UserEmail = email;
+    }
+
+    public string GenerateCode(int length = 8)
+    {
+        // Definimos os caracteres permitidos (Letras e Números)
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+        Random random = new Random();
+
+        // Geramos a string escolhendo caracteres aleatórios da lista acima
+        char[] result = Enumerable.Repeat(chars, length)
+            .Select(s => s[random.Next(s.Length)])
+            .ToArray();
+
+        var resultString = new string(result);
+        this.Code = resultString;
+
+        return resultString;
     }
 
 }

@@ -31,6 +31,7 @@ public class CreateOrderHandler(
         order.Total = order.CalcTotal;
         order.SetDefaultEntityProps();
         order.Status = OrderStatus.Pending;
+        order.GenerateCode();
 
         order.PaymentInfo.Add(new PaymentInfo(
             Guid.NewGuid(),

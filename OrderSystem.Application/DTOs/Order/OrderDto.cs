@@ -13,5 +13,6 @@ public record class OrderDto
     public decimal Total { get; set; }
     public int Status { get; set; }
     public List<PaymentInfoDto>? PaymentInfo { get; set; }
+    public string Code { get; set; } = string.Empty;
 
 }
