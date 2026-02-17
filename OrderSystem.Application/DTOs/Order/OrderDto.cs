@@ -12,5 +12,6 @@ public record class OrderDto
     public bool Active { get; set; }
     public decimal Total { get; set; }
     public int Status { get; set; }
+    public List<PaymentInfoDto>? PaymentInfo { get; set; }
 
 }

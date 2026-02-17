@@ -55,6 +55,7 @@ public class OrderRepository(AppDbContext context) : IOrderRepository
     {
         var order = await context.Orders
             .Include(o => o.OrderProducts)
+            .Include(o => o.PaymentInfo)
             .AsNoTracking()
             .FirstOrDefaultAsync(o => o.Id == id);
 

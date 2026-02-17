@@ -17,5 +17,6 @@ public class OrderMappingProfile : Profile
 
         CreateMap<Order, OrderDto>();
         CreateMap<OrderProduct, OrderProductDto>();
+        CreateMap<PaymentInfo, PaymentInfoDto>();
     }
 }
