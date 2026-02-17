@@ -58,6 +58,7 @@ public class Product : Entity
 
 
         this.AvailableQuantity -= Quantity;
+        Version++; //change version to avoid concorrency andrace condition
 
         return this.AvailableQuantity;
     }

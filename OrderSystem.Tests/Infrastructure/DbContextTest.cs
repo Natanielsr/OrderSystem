@@ -36,11 +36,9 @@ public class DbContextTest
         Product? p2 = await context2.Products.FindAsync(productId);
 
         p1!.ReduceInStock(1);
-        p1!.Version++;
         await context1.SaveChangesAsync();
 
         p2!.ReduceInStock(1);
-        p2!.Version++;
 
         await Assert.ThrowsAsync<DbUpdateConcurrencyException>(
             () => context2.SaveChangesAsync());

@@ -80,13 +80,10 @@ public class CreateOrderHandler(
                 product.Price,
                 productDto.Quantity
             );
-
             orderProduct.SetDefaultEntityProps();
-
             order.AddProductOrder(orderProduct);
-
             product.ReduceInStock(productDto.Quantity);
-            product.Version++;
+
             await orderUnitOfWork.productRepository.UpdateAsync(product.Id, product);
 
         }
