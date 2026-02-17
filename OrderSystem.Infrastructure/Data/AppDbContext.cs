@@ -18,6 +18,10 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.Entity<Product>()
+            .Property(p => p.Version)
+            .IsConcurrencyToken(); // O EF vai usar isso no WHERE automaticamente
+
         var p1Id = Guid.Parse("868d8763-125c-4384-8149-c12e52e50529");
         var p2Id = Guid.Parse("671b4025-a134-45e0-9e67-0c7f1a308967");
 

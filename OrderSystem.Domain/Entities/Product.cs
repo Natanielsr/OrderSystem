@@ -1,4 +1,4 @@
-using System.Data.Common;
+using System.ComponentModel.DataAnnotations;
 using OrderSystem.Domain.Exceptions;
 
 namespace OrderSystem.Domain.Entities;
@@ -11,6 +11,8 @@ public class Product : Entity
     public int AvailableQuantity { get; private set; }
 
     public string ImagePath { get; set; } = string.Empty;
+
+    public int Version { get; set; }
 
     protected Product() { }
 
