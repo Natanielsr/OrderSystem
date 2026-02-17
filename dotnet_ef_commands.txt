@@ -1,6 +1,6 @@
 # Para Criar uma Migração
 dotnet ef migrations add NomeDaMigration --project NomeDaInfra --startup-project NomeDaAPI
-dotnet ef migrations add AddStatusInOrder --project OrderSystem.Infrastructure --startup-project OrderSystem.API
+dotnet ef migrations add AddPaymentInfo --project OrderSystem.Infrastructure --startup-project OrderSystem.API
 
 dotnet ef migrations list --project OrderSystem.Infrastructure  --startup-project OrderSystem.API
 #remove
