@@ -22,6 +22,8 @@ public class Order : Entity
     public OrderStatus Status { get; set; }
     public List<PaymentInfo> PaymentInfo { get; set; } = new List<PaymentInfo>();
     public string? Code { get; private set; }
+    public Guid AddressId { get; set; }
+    public Address? Address { get; set; }
 
     public decimal CalcTotal
     {
