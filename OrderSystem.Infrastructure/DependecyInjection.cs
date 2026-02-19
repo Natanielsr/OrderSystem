@@ -34,6 +34,7 @@ public static class DependecyInjection
         services.AddScoped<ITokenService, JWTTokenService>();
         services.AddScoped<IPasswordService, PasswordService>();
         services.AddScoped<IStorageService, LocalStorageService>();
+        services.AddScoped<IAddressRepository, AddressRepository>();
 
         //jwt 
         services.AddAuthentication(options =>
