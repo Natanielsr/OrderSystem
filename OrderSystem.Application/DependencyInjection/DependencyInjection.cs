@@ -24,6 +24,7 @@ public static class DependencyInjection
         services.AddAutoMapper(typeof(OrderMappingProfile).Assembly);
         services.AddAutoMapper(typeof(UserMappingProfile).Assembly);
         services.AddAutoMapper(typeof(ProductMappingProfile).Assembly);
+        services.AddAutoMapper(typeof(AddressMappingProfile).Assembly);
 
         // Configura o MediatR e adiciona o Behavior
         services.AddMediatR(cfg =>
