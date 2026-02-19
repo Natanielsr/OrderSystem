@@ -11,7 +11,7 @@ public class AuthorizationBase
             return validGuidResponse;
 
         if (userId != userIdClaim)
-            return new AuthorizationResponse() { Success = false, Message = "UserId is different from userIdClaim" };
+            return new AuthorizationResponse() { Success = false, Message = "User access denied" };
 
         return new AuthorizationResponse() { Success = true, Message = "User access allowed" };
     }
