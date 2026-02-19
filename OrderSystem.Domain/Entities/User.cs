@@ -18,6 +18,8 @@ public class User : Entity
 
     public string? Role { get; private set; }
 
+    public List<Address>? Addresses { get; set; }
+
     protected User() { }
 
     public User(Guid id,
