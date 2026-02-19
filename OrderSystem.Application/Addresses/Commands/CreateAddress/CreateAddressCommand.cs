@@ -12,7 +12,8 @@ public record class CreateAddressCommand(
     string Neighborhood,
     string City,
     string State,
-    string ZipCode
+    string ZipCode,
+    Guid UserId
 ) : IRequest<AddressDto>
 {
 
