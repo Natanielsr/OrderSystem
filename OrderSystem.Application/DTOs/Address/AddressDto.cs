@@ -13,4 +13,5 @@ public record class AddressDto
     public string State { get; set; } = string.Empty;
     public string ZipCode { get; set; } = string.Empty;
     public string Country { get; set; } = "Brasil"; // Valor padrão
+    public Guid UserId { get; set; }
 }
