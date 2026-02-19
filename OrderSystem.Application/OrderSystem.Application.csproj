@@ -18,6 +18,7 @@
     <Folder Include="Addresses/Commands/CreateAddress/" />
     <Folder Include="Addresses/Queries/" />
     <Folder Include="Addresses/Queries/GetAddressById/" />
+    <Folder Include="Addresses/Queries/GetUserAddresses/" />
     <Folder Include="DependencyInjection/" />
     <Folder Include="DTOs/Address/" />
     <Folder Include="DTOs/Order/" />
