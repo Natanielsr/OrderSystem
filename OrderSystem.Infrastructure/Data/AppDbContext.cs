@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using OrderSystem.Domain.Entities;
-using OrderSystem.Infrastructure.Services;
 
 namespace OrderSystem.Infrastructure.Data;
 
@@ -10,6 +9,7 @@ public class AppDbContext : DbContext
     public DbSet<Product> Products { get; set; }
     public DbSet<OrderProduct> OrderProducts { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<Address> Addresses { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     { }
