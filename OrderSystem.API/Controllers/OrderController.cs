@@ -50,7 +50,7 @@ namespace OrderSystem.API.Controllers
             pageSize = pageSize <= 0 ? 5 : pageSize;
 
             var userClaim = APIClaim.createUserClaim(User);
-            var authorizationResponse = OrderAuthorization.GetUserOrders(userClaim, userId);
+            var authorizationResponse = AuthorizationBase.ValidUser(userClaim, userId);
             if (!authorizationResponse.Success)
                 return StatusCode(403, authorizationResponse.Message);
 
