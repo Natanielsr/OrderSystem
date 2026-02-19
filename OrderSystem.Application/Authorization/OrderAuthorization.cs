@@ -4,7 +4,7 @@ using OrderSystem.Domain.Entities;
 
 namespace OrderSystem.Application.Authorization;
 
-public static class OrderAuthorization
+public class OrderAuthorization : AuthorizationBase
 {
     public static AuthorizationResponse CreateOrder(UserClaim userClaim, CreateOrderCommand createOrderCommand)
     {
@@ -36,39 +36,8 @@ public static class OrderAuthorization
         return new AuthorizationResponse() { Success = true, Message = "authorized user" };
     }
 
-    public static AuthorizationResponse ValidGuid(UserClaim userClaim)
-    {
-        var userId = getGuid(userClaim.Id);
-        if (userId == Guid.Empty)
-            return new AuthorizationResponse() { Success = false, Message = "the authenticated id is not a valid guid" };
-        else
-            return new AuthorizationResponse() { Success = true, Message = "Valid Guid" };
-    }
-
-    public static AuthorizationResponse GetUserOrders(UserClaim userClaim, Guid userId)
-    {
-        Guid userIdClaim = getGuid(userClaim.Id);
-
-        var validGuidResponse = ValidGuid(userClaim);
-        if (!validGuidResponse.Success)
-            return validGuidResponse;
-
-        if (userId != userIdClaim)
-            return new AuthorizationResponse() { Success = false, Message = "Order UserId is different from userIdClaim" };
-
-        return new AuthorizationResponse() { Success = true, Message = "UserOrders access allowed" };
-    }
 
 
-    public static Guid getGuid(string id)
-    {
-        if (Guid.TryParse(id, out Guid result))
-        {
-            return result;
-        }
-        else
-        {
-            return Guid.Empty;
-        }
-    }
+
+
 }
