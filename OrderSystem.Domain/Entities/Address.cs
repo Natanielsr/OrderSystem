@@ -16,6 +16,9 @@ public class Address : Entity
     public required string State { get; set; }
     public required string ZipCode { get; set; }
     public required string Country { get; set; } = "Brasil"; // Valor padrão
+    public Guid UserId { get; set; }
+    public User? User { get; set; }
+    public List<Order>? Orders { get; set; }
 
     // Construtor vazio (importante para serialização/EF)
     protected Address() { }
