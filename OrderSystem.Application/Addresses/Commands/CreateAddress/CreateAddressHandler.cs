@@ -1,0 +1,22 @@
+using System;
+using AutoMapper;
+using MediatR;
+using OrderSystem.Application.DTOs.Address;
+using OrderSystem.Domain.Entities;
+using OrderSystem.Domain.Repository;
+
+namespace OrderSystem.Application.Addresses.Commands.CreateAddress;
+
+public class CreateAddressHandler(IAddressRepository repository, IMapper mapper) : IRequestHandler<CreateAddressCommand, AddressDto>
+{
+    public async Task<AddressDto> Handle(CreateAddressCommand request, CancellationToken cancellationToken)
+    {
+        Address address = mapper.Map<Address>(request);
+
+        var response = await repository.AddAsync(address);
+
+        AddressDto addressDto = mapper.Map<AddressDto>(response);
+
+        return addressDto;
+    }
+}
