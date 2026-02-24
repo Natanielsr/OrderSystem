@@ -60,12 +60,21 @@ public class AddressRepository(AppDbContext context) : IAddressRepository
 
     public async Task<Entity> UpdateAsync(Guid id, Entity updatedEntity)
     {
+        Address updateAddress = (Address)updatedEntity;
         var address = await context.Addresses.FindAsync(id);
 
         if (address != null)
         {
             address.RenewUpdateDate();
-            address = (Address)updatedEntity;
+            address.FullName = updateAddress.FullName;
+            address.Cpf = updateAddress.Cpf;
+            address.ZipCode = updateAddress.ZipCode;
+            address.Street = updateAddress.Street;
+            address.Number = updateAddress.Number;
+            address.Neighborhood = updateAddress.Neighborhood;
+            address.Complement = updateAddress.Complement;
+            address.City = updateAddress.City;
+            address.State = updateAddress.State;
         }
 
         return address!;
