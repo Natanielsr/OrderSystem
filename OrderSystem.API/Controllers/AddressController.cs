@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using OrderSystem.API.Security;
 using OrderSystem.Application.Addresses.Commands.CreateAddress;
 using OrderSystem.Application.Addresses.Commands.DeleteAddress;
+using OrderSystem.Application.Addresses.Commands.DisableAddress;
 using OrderSystem.Application.Addresses.Commands.UpdateAddress;
 using OrderSystem.Application.Addresses.Queries.GetAddressById;
 using OrderSystem.Application.Addresses.Queries.GetUserAddresses;
@@ -95,8 +96,8 @@ namespace OrderSystem.API.Controllers
             if (!auth.Success)
                 return StatusCode(403, auth.Message);
 
-            var success = await mediator.Send(new DeleteAddressCommand(id));
-            return success ? NoContent() : BadRequest("The address could not be deleted.");
+            var addressDtoResponse = await mediator.Send(new DisableAddressCommand(id));
+            return addressDtoResponse != null ? NoContent() : BadRequest("The address could not be deleted.");
         }
     }
 }
