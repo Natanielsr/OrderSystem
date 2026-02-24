@@ -13,8 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Addresses/" />
-    <Folder Include="Addresses/Commands/" />
     <Folder Include="Addresses/Commands/CreateAddress/" />
     <Folder Include="Addresses/Commands/DeleteAddress/" />
     <Folder Include="Addresses/Commands/UpdateAddress/" />
