@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrderSystem.API.Security;
 using OrderSystem.Application.Addresses.Commands.CreateAddress;
+using OrderSystem.Application.Addresses.Commands.DeleteAddress;
 using OrderSystem.Application.Addresses.Commands.UpdateAddress;
 using OrderSystem.Application.Addresses.Queries.GetAddressById;
 using OrderSystem.Application.Addresses.Queries.GetUserAddresses;
@@ -79,6 +80,23 @@ namespace OrderSystem.API.Controllers
             AddressDto response = await mediator.Send(updateAddressCommand);
 
             return CreatedAtRoute("GetAddressById", new { id = response.Id }, response);
+        }
+
+        [HttpDelete("{id:guid}")]
+        [Authorize]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            AddressDto addressDto = await mediator.Send(new GetAddressByIdQuery(id));
+            if (addressDto == null)
+                return NotFound("Address not found.");
+
+            var userClaim = APIClaim.createUserClaim(User);
+            var auth = AuthorizationBase.ValidUser(userClaim, addressDto.UserId);
+            if (!auth.Success)
+                return StatusCode(403, auth.Message);
+
+            var success = await mediator.Send(new DeleteAddressCommand(id));
+            return success ? NoContent() : BadRequest("The address could not be deleted.");
         }
     }
 }
