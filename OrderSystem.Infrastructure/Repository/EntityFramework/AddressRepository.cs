@@ -31,6 +31,18 @@ public class AddressRepository(AppDbContext context) : IAddressRepository
         return false;
     }
 
+    public async Task<Address> DisableAsync(Guid AddressId)
+    {
+        Address? address = await context.Addresses.FindAsync(AddressId);
+
+        if (address != null)
+        {
+            address.Disable();
+        }
+
+        return address!;
+    }
+
     public async Task<IEnumerable<Entity>> GetAllAsync()
     {
         return await context.Addresses
@@ -52,6 +64,7 @@ public class AddressRepository(AppDbContext context) : IAddressRepository
         return await context.Addresses
             .AsNoTracking()
             .Where(a => a.UserId == UserId)
+            .Where(a => a.Active == true) //get only actives addresses
             .OrderByDescending(o => o.CreationDate)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
