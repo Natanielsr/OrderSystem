@@ -16,6 +16,7 @@
     <Folder Include="Addresses/" />
     <Folder Include="Addresses/Commands/" />
     <Folder Include="Addresses/Commands/CreateAddress/" />
+    <Folder Include="Addresses/Commands/UpdateAddress/" />
     <Folder Include="Addresses/Queries/" />
     <Folder Include="Addresses/Queries/GetAddressById/" />
     <Folder Include="Addresses/Queries/GetUserAddresses/" />
