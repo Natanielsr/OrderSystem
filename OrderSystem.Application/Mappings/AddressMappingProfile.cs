@@ -1,6 +1,7 @@
 using System;
 using AutoMapper;
 using OrderSystem.Application.Addresses.Commands.CreateAddress;
+using OrderSystem.Application.Addresses.Commands.UpdateAddress;
 using OrderSystem.Application.DTOs.Address;
 using OrderSystem.Domain.Entities;
 
@@ -12,5 +13,6 @@ public class AddressMappingProfile : Profile
     {
         CreateMap<CreateAddressCommand, Address>();
         CreateMap<Address, AddressDto>();
+        CreateMap<UpdateAddressCommand, Address>();
     }
 }
