@@ -96,7 +96,7 @@ public class CreateOrderHandlerTest
         {
             createOrderProductDtos.Add(new() { ProductId = product.Id, Quantity = product.AvailableQuantity });
         }
-        CreateOrderCommand command = new(createOrderProductDtos, userId, PaymentMethod.Pix);
+        CreateOrderCommand command = new(createOrderProductDtos, userId, PaymentMethod.Pix, Guid.Empty);
 
         return command;
     }
@@ -197,7 +197,7 @@ public class CreateOrderHandlerTest
             new() { ProductId = Guid.NewGuid(), Quantity = 1 }
         };
 
-        CreateOrderCommand command = new(createOrderProductDtos, userId, PaymentMethod.Pix);
+        CreateOrderCommand command = new(createOrderProductDtos, userId, PaymentMethod.Pix, Guid.Empty);
 
         //Act
         var er = await Assert.ThrowsAsync<ProductNotFoundException>(async () =>
@@ -223,7 +223,7 @@ public class CreateOrderHandlerTest
             new() { ProductId = TestProducts.ElementAt(0).Id, Quantity = 1 }
         };
 
-        CreateOrderCommand command = new(createOrderProductDtos, userId, PaymentMethod.Pix);
+        CreateOrderCommand command = new(createOrderProductDtos, userId, PaymentMethod.Pix, Guid.Empty);
 
         //Act
         var er = await Assert.ThrowsAsync<DuplicateProductInOrderException>(async () =>
@@ -249,7 +249,7 @@ public class CreateOrderHandlerTest
             new() { ProductId = productId, Quantity = 1 }
         };
 
-        CreateOrderCommand command = new(createOrderProductDtos, userId, PaymentMethod.Pix);
+        CreateOrderCommand command = new(createOrderProductDtos, userId, PaymentMethod.Pix, Guid.Empty);
 
         //Act
         var response = await createOrderHandler.Handle(command, cancellationToken);
