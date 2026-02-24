@@ -38,4 +38,9 @@ public abstract class Entity
     {
         Active = true;
     }
+
+    public void Disable()
+    {
+        Active = false;
+    }
 }
