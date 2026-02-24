@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrderSystem.API.Security;
 using OrderSystem.Application.Addresses.Commands.CreateAddress;
+using OrderSystem.Application.Addresses.Commands.UpdateAddress;
 using OrderSystem.Application.Addresses.Queries.GetAddressById;
 using OrderSystem.Application.Addresses.Queries.GetUserAddresses;
 using OrderSystem.Application.Authorization;
@@ -62,6 +63,22 @@ namespace OrderSystem.API.Controllers
 
             var response = await mediator.Send(new GetUserAddressesQuery(userId, page, pageSize));
             return Ok(response);
+        }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> Update([FromBody] UpdateAddressCommand updateAddressCommand)
+        {
+            var userClaim = APIClaim.createUserClaim(User);
+            var authResponse = AuthorizationBase.ValidUser(userClaim, updateAddressCommand.UserId);
+            if (!authResponse.Success)
+            {
+                return StatusCode(403, authResponse.Message);
+            }
+
+            AddressDto response = await mediator.Send(updateAddressCommand);
+
+            return CreatedAtRoute("GetAddressById", new { id = response.Id }, response);
         }
     }
 }
