@@ -10,7 +10,7 @@ public class GetUserAddressesHandler(IAddressRepository repository, IMapper mapp
 {
     public async Task<List<AddressDto>> Handle(GetUserAddressesQuery request, CancellationToken cancellationToken)
     {
-        List<Address> addresses = await repository.GetUserAddressesAsync(request.UserId, request.Page, request.PageSize);
+        List<Address> addresses = await repository.GetUserAddressesAsync(request.UserId);
         var addressesDto = mapper.Map<List<AddressDto>>(addresses);
 
         return addressesDto;
