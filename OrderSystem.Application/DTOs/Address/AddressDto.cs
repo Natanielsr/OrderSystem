@@ -14,4 +14,5 @@ public record class AddressDto
     public string ZipCode { get; set; } = string.Empty;
     public string Country { get; set; } = "Brasil"; // Valor padrão
     public Guid UserId { get; set; }
+    public bool IsDefault { get; set; }
 }
