@@ -15,7 +15,7 @@ public class CreateAddressHandler(IAddressRepository repository, IMapper mapper,
     {
         Address newAddress = mapper.Map<Address>(request);
 
-        var userAddresses = await repository.GetUserAddressesAsync(request.UserId, 1, 5);
+        var userAddresses = await repository.GetUserAddressesAsync(request.UserId);
         if (userAddresses.Count() > 5)
             throw new AddressCountExceededException();
 
