@@ -19,6 +19,7 @@ public class Address : Entity
     public Guid UserId { get; set; }
     public User? User { get; set; }
     public List<Order>? Orders { get; set; }
+    public bool IsDefault { get; set; }
 
     // Construtor vazio (importante para serialização/EF)
     protected Address() { }
