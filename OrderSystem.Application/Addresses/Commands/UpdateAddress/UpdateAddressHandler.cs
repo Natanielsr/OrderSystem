@@ -14,7 +14,7 @@ public class UpdateAddressHandler(IAddressRepository repository, IUnitOfWork uni
     {
         if (request.IsDefault)
         {
-            var userAddresses = await repository.GetUserAddressesAsync(request.UserId, 1, 5);
+            var userAddresses = await repository.GetUserAddressesAsync(request.UserId);
             foreach (var a in userAddresses)
             {
                 a.IsDefault = false;
