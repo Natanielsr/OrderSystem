@@ -53,17 +53,14 @@ namespace OrderSystem.API.Controllers
 
         [Authorize]
         [HttpGet("GetUserAddresses")]
-        public async Task<IActionResult> GetUserAddresses([FromQuery] Guid userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 5)
+        public async Task<IActionResult> GetUserAddresses([FromQuery] Guid userId)
         {
-            page = page <= 0 ? 1 : page;
-            pageSize = pageSize <= 0 ? 5 : pageSize;
-
             var userClaim = APIClaim.createUserClaim(User);
             var authorizationResponse = AuthorizationBase.ValidUser(userClaim, userId);
             if (!authorizationResponse.Success)
                 return StatusCode(403, authorizationResponse.Message);
 
-            var response = await mediator.Send(new GetUserAddressesQuery(userId, page, pageSize));
+            var response = await mediator.Send(new GetUserAddressesQuery(userId));
             return Ok(response);
         }
 
