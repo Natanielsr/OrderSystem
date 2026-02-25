@@ -13,7 +13,8 @@ public record class CreateAddressCommand(
     string City,
     string State,
     string ZipCode,
-    Guid UserId
+    Guid UserId,
+    bool IsDefault
 ) : IRequest<AddressDto>
 {
 
