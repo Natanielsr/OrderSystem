@@ -12,16 +12,25 @@ public class UpdateAddressHandler(IAddressRepository repository, IUnitOfWork uni
 {
     public async Task<AddressDto> Handle(UpdateAddressCommand request, CancellationToken cancellationToken)
     {
-        Address address = mapper.Map<Address>(request);
-        Address response = (Address)await repository.UpdateAsync(request.Id, address);
+        if (request.IsDefault)
+        {
+            var userAddresses = await repository.GetUserAddressesAsync(request.UserId, 1, 5);
+            foreach (var a in userAddresses)
+            {
+                a.IsDefault = false;
+            }
+        }
+
+        Address addressRequest = mapper.Map<Address>(request);
+        Address addressResponse = (Address)await repository.UpdateAsync(request.Id, addressRequest);
 
         var success = await unitOfWork.CommitAsync();
         if (!success)
             throw new Exception("It was not possible to update the address in the repository.");
 
-        AddressDto addressDto = mapper.Map<AddressDto>(response);
+        AddressDto addressResponseDto = mapper.Map<AddressDto>(addressResponse);
 
-        return addressDto;
+        return addressResponseDto;
 
     }
 }
