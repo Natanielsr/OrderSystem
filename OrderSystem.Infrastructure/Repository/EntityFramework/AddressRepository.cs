@@ -62,7 +62,6 @@ public class AddressRepository(AppDbContext context) : IAddressRepository
     public async Task<List<Address>> GetUserAddressesAsync(Guid UserId, int page, int pageSize)
     {
         return await context.Addresses
-            .AsNoTracking()
             .Where(a => a.UserId == UserId)
             .Where(a => a.Active == true) //get only actives addresses
             .OrderByDescending(o => o.CreationDate)
@@ -88,6 +87,7 @@ public class AddressRepository(AppDbContext context) : IAddressRepository
             address.Complement = updateAddress.Complement;
             address.City = updateAddress.City;
             address.State = updateAddress.State;
+            address.IsDefault = updateAddress.IsDefault;
         }
 
         return address!;
