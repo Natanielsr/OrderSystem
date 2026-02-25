@@ -15,7 +15,8 @@ public record class UpdateAddressCommand(
     string State,
     string ZipCode,
     string Country,
-    Guid UserId
+    Guid UserId,
+    bool IsDefault
 
 ) : IRequest<AddressDto>
 {
