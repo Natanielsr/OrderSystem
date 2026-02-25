@@ -5,7 +5,7 @@ namespace OrderSystem.Domain.Repository;
 
 public interface IAddressRepository : IRepository
 {
-    public Task<List<Address>> GetUserAddressesAsync(Guid UserId, int page, int pageSize);
+    public Task<List<Address>> GetUserAddressesAsync(Guid UserId);
 
     public Task<Address> DisableAsync(Guid AddressId);
 }

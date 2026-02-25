@@ -59,14 +59,12 @@ public class AddressRepository(AppDbContext context) : IAddressRepository
         return address!;
     }
 
-    public async Task<List<Address>> GetUserAddressesAsync(Guid UserId, int page, int pageSize)
+    public async Task<List<Address>> GetUserAddressesAsync(Guid UserId)
     {
         return await context.Addresses
             .Where(a => a.UserId == UserId)
             .Where(a => a.Active == true) //get only actives addresses
             .OrderByDescending(o => o.CreationDate)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
             .ToListAsync();
     }
 
