@@ -11,7 +11,6 @@ public class OrderRepository(AppDbContext context) : IOrderRepository
     public async Task<Entity> AddAsync(Entity entity)
     {
         Order order = (Order)entity;
-        order.SetDefaultEntityProps();
 
         await context.Orders.AddAsync((Order)entity);
 
