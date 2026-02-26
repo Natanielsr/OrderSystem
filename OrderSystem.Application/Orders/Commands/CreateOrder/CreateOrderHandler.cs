@@ -1,6 +1,7 @@
 using AutoMapper;
 using MediatR;
 using OrderSystem.Application.DTOs.Order;
+using OrderSystem.Application.Services;
 using OrderSystem.Domain.Entities;
 using OrderSystem.Domain.Exceptions;
 using OrderSystem.Domain.Repository;
@@ -17,34 +18,45 @@ public class CreateOrderHandler(
 {
     public async Task<CreateOrderResponseDto> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
-        Order order = mapper.Map<Order>(request);
-
-        var user = await GetUser(order.UserId);
+        var user = await GetUser(request.UserId);
         if (user == null)
             throw new UserNotFoundException();
 
-        //set default order data
-        order.SetUsername(user.Username);
-        order.SetEmail(user.Email);
-        order = await addProducts(request.OrderProducts, order);
-        //save the calculation total
-        order.Total = order.CalcTotal;
-        order.SetDefaultEntityProps();
-        order.Status = OrderStatus.Pending;
-        order.GenerateCode();
+        var orderId = Guid.NewGuid();
 
-        order.PaymentInfo.Add(new PaymentInfo(
-            Guid.NewGuid(),
-            DateTimeOffset.UtcNow,
-            DateTimeOffset.UtcNow,
-            true,
-            request.PaymentMethod,
-            order.Total,
-            "transaction_reference",
-            "last_four_digits",
-            "provider_name",
-            PaymentStatus.Pending
-        ));
+        var orderProducts = await createValidOrderProductListAndReduceInStock(request.OrderProducts, orderId);
+
+        Order order = new()
+        {
+            Id = orderId,
+            CreationDate = DateTimeOffset.UtcNow,
+            UpdateDate = DateTimeOffset.UtcNow,
+            Active = true,
+            UserName = user.Username,
+            UserEmail = user.Email,
+            Total = Order.CalcTotal(orderProducts),
+            Status = OrderStatus.Pending,
+            Code = GenerateCode.Generate(),
+            UserId = user.Id,
+            AddressId = request.AddressId,
+            OrderProducts = orderProducts
+        };
+
+        order.PaymentInfo.Add(new PaymentInfo()
+        {
+            Id = Guid.NewGuid(),
+            CreationDate = DateTimeOffset.UtcNow,
+            UpdateDate = DateTimeOffset.UtcNow,
+            Active = true,
+            Method = request.PaymentMethod,
+            PaidAmount = order.Total,
+            TransactionReference = "transaction_reference",
+            LastFourDigits = "last_four_digits",
+            ProviderName = "provider_name",
+            Status = PaymentStatus.Pending,
+            OrderId = order.Id
+        });
+
 
         Order createdOrder = (Order)await orderUnitOfWork.orderRepository.AddAsync(order);
         var success = await orderUnitOfWork.CommitAsync();
@@ -62,8 +74,13 @@ public class CreateOrderHandler(
         return (User)await userRepository.GetByIdAsync(userId);
     }
 
-    private async Task<Order> addProducts(List<CreateOrderProductDto> createOrderProductDtos, Order order)
+    private async Task<List<OrderProduct>> createValidOrderProductListAndReduceInStock(
+        List<CreateOrderProductDto> createOrderProductDtos,
+        Guid orderId
+        )
     {
+        List<OrderProduct> orderProducts = new List<OrderProduct>();
+
         if (HasDuplicates(createOrderProductDtos))
             throw new DuplicateProductInOrderException();
 
@@ -74,21 +91,26 @@ public class CreateOrderHandler(
                 throw new ProductNotFoundException();
 
 
-            OrderProduct orderProduct = new(
-                product.Id,
-                product.Name,
-                product.Price,
-                productDto.Quantity
-            );
-            orderProduct.SetDefaultEntityProps();
-            order.AddProductOrder(orderProduct);
-            product.ReduceInStock(productDto.Quantity);
+            OrderProduct orderProduct = new()
+            {
+                Id = Guid.NewGuid(),
+                CreationDate = DateTimeOffset.UtcNow,
+                UpdateDate = DateTimeOffset.UtcNow,
+                Active = true,
+                ProductId = product.Id,
+                ProductName = product.Name,
+                UnitPrice = product.Price,
+                Quantity = productDto.Quantity,
+                OrderId = orderId
+            };
 
-            await orderUnitOfWork.productRepository.UpdateAsync(product.Id, product);
+            orderProducts.Add(orderProduct);
 
+            product.ReduceInStock(productDto.Quantity); //reduce product in stock
+            await orderUnitOfWork.productRepository.UpdateAsync(product.Id, product); //update in repository
         }
 
-        return order;
+        return orderProducts;
     }
 
     private bool HasDuplicates(List<CreateOrderProductDto> list)
