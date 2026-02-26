@@ -13,10 +13,15 @@ public class OrderMappingProfile : Profile
         CreateMap<Order, CreateOrderResponseDto>();
 
         CreateMap<CreateOrderCommand, Order>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
+            .ForMember(dest => dest.CreationDate, opt => opt.MapFrom(src => DateTimeOffset.UtcNow))
+            .ForMember(dest => dest.UpdateDate, opt => opt.MapFrom(src => DateTimeOffset.UtcNow))
+            .ForMember(dest => dest.Active, opt => opt.MapFrom(src => DateTimeOffset.UtcNow))
             .ForMember(dest => dest.OrderProducts, opt => opt.Ignore());
 
         CreateMap<Order, OrderDto>();
         CreateMap<OrderProduct, OrderProductDto>();
+
         CreateMap<PaymentInfo, PaymentInfoDto>();
     }
 }
