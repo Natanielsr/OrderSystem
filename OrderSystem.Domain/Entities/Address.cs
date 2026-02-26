@@ -16,32 +16,13 @@ public class Address : Entity
     public required string State { get; set; }
     public required string ZipCode { get; set; }
     public required string Country { get; set; } = "Brasil"; // Valor padrão
-    public Guid UserId { get; set; }
-    public User? User { get; set; }
-    public List<Order>? Orders { get; set; }
-    public bool IsDefault { get; set; }
+    public required Guid UserId { get; init; }
+    public User? User { get; init; }
+    public List<Order>? Orders { get; init; }
+    public required bool IsDefault { get; set; }
 
     // Construtor vazio (importante para serialização/EF)
     protected Address() { }
-
-    // Construtor para facilitar a criação
-    public Address(
-        string fullName,
-        string cpf,
-        string street,
-        string number,
-        string zipCode,
-        string city,
-        string state)
-    {
-        FullName = fullName;
-        Cpf = cpf;
-        Street = street;
-        Number = number;
-        ZipCode = zipCode;
-        City = city;
-        State = state;
-    }
 
     // Método útil para exibir o endereço formatado
     public override string ToString()
