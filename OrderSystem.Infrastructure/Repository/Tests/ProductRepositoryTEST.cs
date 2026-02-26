@@ -8,9 +8,9 @@ public class ProductRepositoryTEST : IProductRepository
 {
     List<Product> products = new List<Product>()
     {
-        new ( Guid.NewGuid(), "Monitor", 1, 1),
-        new ( Guid.NewGuid(),  "Teclado", 2,  2),
-        new (Guid.NewGuid(), "Mouse",  3,  3),
+        Product.CreateProduct("Monitor", 1, 1, ""),
+        Product.CreateProduct("Teclado", 2, 2, ""),
+        Product.CreateProduct("Mouse", 3, 3, "")
     };
 
     public async Task<Entity> AddAsync(Entity entity)
