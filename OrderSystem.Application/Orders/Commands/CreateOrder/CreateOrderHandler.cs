@@ -84,11 +84,17 @@ public class CreateOrderHandler(
         if (HasDuplicates(createOrderProductDtos))
             throw new DuplicateProductInOrderException();
 
-        foreach (var productDto in createOrderProductDtos)
+        foreach (var orderProductDto in createOrderProductDtos)
         {
-            Product product = (Product)await orderUnitOfWork.productRepository.GetByIdAsync(productDto.ProductId);
+            Product product = (Product)await orderUnitOfWork.productRepository.GetByIdAsync(orderProductDto.ProductId);
             if (product is null)
                 throw new ProductNotFoundException();
+
+            if (orderProductDto is null)
+                throw new AddProductOrderException("productOrder cant be null");
+
+            if (orderProductDto.Quantity <= 0)
+                throw new AddProductOrderException("productOrder quantity must be bigger then zero");
 
 
             OrderProduct orderProduct = new()
@@ -100,13 +106,13 @@ public class CreateOrderHandler(
                 ProductId = product.Id,
                 ProductName = product.Name,
                 UnitPrice = product.Price,
-                Quantity = productDto.Quantity,
+                Quantity = orderProductDto.Quantity,
                 OrderId = orderId
             };
 
             orderProducts.Add(orderProduct);
 
-            product.ReduceInStock(productDto.Quantity); //reduce product in stock
+            product.ReduceInStock(orderProductDto.Quantity); //reduce product in stock
             await orderUnitOfWork.productRepository.UpdateAsync(product.Id, product); //update in repository
         }
 
