@@ -11,7 +11,12 @@ public class AddressMappingProfile : Profile
 {
     public AddressMappingProfile()
     {
-        CreateMap<CreateAddressCommand, Address>();
+        CreateMap<CreateAddressCommand, Address>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
+            .ForMember(dest => dest.CreationDate, opt => opt.MapFrom(src => DateTimeOffset.UtcNow))
+            .ForMember(dest => dest.UpdateDate, opt => opt.MapFrom(src => DateTimeOffset.UtcNow))
+            .ForMember(dest => dest.Active, opt => opt.MapFrom(src => true));
+
         CreateMap<Address, AddressDto>();
         CreateMap<UpdateAddressCommand, Address>();
     }
