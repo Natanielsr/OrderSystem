@@ -8,9 +8,9 @@ public class UserRepositoryTEST : IUserRepository
 {
     List<User> users = new List<User>()
     {
-        new (Guid.NewGuid(), "TestUser1","testuser1@email.com", "password" ),
-        new (Guid.NewGuid(), "TestUser2","testuser2@email.com", "password" ),
-        new (Guid.NewGuid(), "TestUser3","testuser3@email.com", "password" ),
+        User.CreateUser("TestUser1", "testuser1@email.com", "password", "role", "telephone"),
+        User.CreateUser("TestUser2", "testuser2@email.com", "password", "role", "telephone"),
+        User.CreateUser("TestUser3", "testuser3@email.com", "password", "role", "telephone"),
     };
 
     public UserRepositoryTEST()
