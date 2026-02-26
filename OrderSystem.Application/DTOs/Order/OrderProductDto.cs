@@ -1,6 +1,6 @@
 namespace OrderSystem.Application.DTOs.Order;
 
-public record class OrderProductDto
+public record class OrderItemDto
 {
     public Guid ProductId { get; set; }
     public string ProductName { get; set; } = string.Empty;

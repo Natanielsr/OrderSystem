@@ -5,7 +5,7 @@ using OrderSystem.Domain.Entities;
 namespace OrderSystem.Application.Orders.Commands.CreateOrder;
 
 public record class CreateOrderCommand(
-    List<CreateOrderProductDto> OrderProducts,
+    List<CreateOrderItemDto> OrderItems,
     Guid UserId,
     PaymentMethod PaymentMethod,
     Guid AddressId

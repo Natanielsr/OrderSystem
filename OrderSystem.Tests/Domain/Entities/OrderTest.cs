@@ -9,15 +9,15 @@ public class OrderTest
     public void TotalTest()
     {
         //Arrange
-        OrderProduct orderProduct1 = createSimpleOrderProduct("Product1", 10.00m, 10);
-        OrderProduct orderProduct2 = createSimpleOrderProduct("Product2", 10.00m, 10);
+        OrderItem orderProduct1 = createSimpleOrderProduct("Product1", 10.00m, 10);
+        OrderItem orderProduct2 = createSimpleOrderProduct("Product2", 10.00m, 10);
 
         Order order = createSimpleOrder();
         order.AddProductOrder(orderProduct1);
         order.AddProductOrder(orderProduct2);
 
         //Act
-        var total = Order.CalcTotal(order.OrderProducts);
+        var total = Order.CalcTotal(order.OrderItems);
 
         //Assert
         Assert.Equal(200m, total);
@@ -31,7 +31,7 @@ public class OrderTest
             CreationDate = DateTimeOffset.UtcNow,
             UpdateDate = DateTimeOffset.UtcNow,
             Active = true,
-            OrderProducts = new List<OrderProduct>(),
+            OrderItems = new List<OrderItem>(),
             UserId = Guid.Empty,
             UserName = "userName",
             UserEmail = "userEmail",
@@ -42,9 +42,9 @@ public class OrderTest
         };
     }
 
-    public OrderProduct createSimpleOrderProduct(string name, decimal price, int quantity)
+    public OrderItem createSimpleOrderProduct(string name, decimal price, int quantity)
     {
-        return new OrderProduct()
+        return new OrderItem()
         {
             Id = Guid.NewGuid(),
             CreationDate = DateTimeOffset.UtcNow,

@@ -9,7 +9,7 @@ public class OrderProductTest
     public void TestTotal()
     {
         //Arrange
-        OrderProduct orderProduct = new OrderProduct()
+        OrderItem orderProduct = new()
         {
             Id = Guid.NewGuid(),
             CreationDate = DateTimeOffset.UtcNow,

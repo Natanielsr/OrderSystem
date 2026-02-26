@@ -24,7 +24,7 @@ public class CreateOrderHandler(
 
         var orderId = Guid.NewGuid();
 
-        var orderProducts = await createValidOrderProductListAndReduceInStock(request.OrderProducts, orderId);
+        var orderItems = await createValidOrderProductListAndReduceInStock(request.OrderItems, orderId);
 
         Order order = new()
         {
@@ -34,12 +34,12 @@ public class CreateOrderHandler(
             Active = true,
             UserName = user.Username,
             UserEmail = user.Email,
-            Total = Order.CalcTotal(orderProducts),
+            Total = Order.CalcTotal(orderItems),
             Status = OrderStatus.Pending,
             Code = GenerateCode.Generate(),
             UserId = user.Id,
             AddressId = request.AddressId,
-            OrderProducts = orderProducts
+            OrderItems = orderItems
         };
 
         order.PaymentInfo.Add(new PaymentInfo()
@@ -74,30 +74,30 @@ public class CreateOrderHandler(
         return (User)await userRepository.GetByIdAsync(userId);
     }
 
-    private async Task<List<OrderProduct>> createValidOrderProductListAndReduceInStock(
-        List<CreateOrderProductDto> createOrderProductDtos,
+    private async Task<List<OrderItem>> createValidOrderProductListAndReduceInStock(
+        List<CreateOrderItemDto> createOrderItemDtos,
         Guid orderId
         )
     {
-        List<OrderProduct> orderProducts = new List<OrderProduct>();
+        List<OrderItem> orderItems = new List<OrderItem>();
 
-        if (HasDuplicates(createOrderProductDtos))
+        if (HasDuplicates(createOrderItemDtos))
             throw new DuplicateProductInOrderException();
 
-        foreach (var orderProductDto in createOrderProductDtos)
+        foreach (var orderItemDto in createOrderItemDtos)
         {
-            Product product = (Product)await orderUnitOfWork.productRepository.GetByIdAsync(orderProductDto.ProductId);
+            Product product = (Product)await orderUnitOfWork.productRepository.GetByIdAsync(orderItemDto.ProductId);
             if (product is null)
                 throw new ProductNotFoundException();
 
-            if (orderProductDto is null)
+            if (orderItemDto is null)
                 throw new AddProductOrderException("productOrder cant be null");
 
-            if (orderProductDto.Quantity <= 0)
+            if (orderItemDto.Quantity <= 0)
                 throw new AddProductOrderException("productOrder quantity must be bigger then zero");
 
 
-            OrderProduct orderProduct = new()
+            OrderItem orderItem = new()
             {
                 Id = Guid.NewGuid(),
                 CreationDate = DateTimeOffset.UtcNow,
@@ -106,20 +106,20 @@ public class CreateOrderHandler(
                 ProductId = product.Id,
                 ProductName = product.Name,
                 UnitPrice = product.Price,
-                Quantity = orderProductDto.Quantity,
+                Quantity = orderItemDto.Quantity,
                 OrderId = orderId
             };
 
-            orderProducts.Add(orderProduct);
+            orderItems.Add(orderItem);
 
-            product.ReduceInStock(orderProductDto.Quantity); //reduce product in stock
+            product.ReduceInStock(orderItem.Quantity); //reduce product in stock
             await orderUnitOfWork.productRepository.UpdateAsync(product.Id, product); //update in repository
         }
 
-        return orderProducts;
+        return orderItems;
     }
 
-    private bool HasDuplicates(List<CreateOrderProductDto> list)
+    private bool HasDuplicates(List<CreateOrderItemDto> list)
     {
         // Compara o total de itens com o total de IDs únicos
         return !(list.Select(x => x.ProductId).Distinct().Count() == list.Count);

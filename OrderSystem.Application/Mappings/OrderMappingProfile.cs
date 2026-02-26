@@ -9,7 +9,7 @@ public class OrderMappingProfile : Profile
 {
     public OrderMappingProfile()
     {
-        CreateMap<OrderProduct, CreateOrderProductResponseDto>();
+        CreateMap<OrderItem, CreateOrderItemResponseDto>();
         CreateMap<Order, CreateOrderResponseDto>();
 
         CreateMap<CreateOrderCommand, Order>()
@@ -17,10 +17,10 @@ public class OrderMappingProfile : Profile
             .ForMember(dest => dest.CreationDate, opt => opt.MapFrom(src => DateTimeOffset.UtcNow))
             .ForMember(dest => dest.UpdateDate, opt => opt.MapFrom(src => DateTimeOffset.UtcNow))
             .ForMember(dest => dest.Active, opt => opt.MapFrom(src => true))
-            .ForMember(dest => dest.OrderProducts, opt => opt.Ignore());
+            .ForMember(dest => dest.OrderItems, opt => opt.Ignore());
 
         CreateMap<Order, OrderDto>();
-        CreateMap<OrderProduct, OrderProductDto>();
+        CreateMap<OrderItem, OrderItemDto>();
 
         CreateMap<PaymentInfo, PaymentInfoDto>();
     }

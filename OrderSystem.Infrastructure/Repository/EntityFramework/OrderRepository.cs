@@ -33,7 +33,7 @@ public class OrderRepository(AppDbContext context) : IOrderRepository
     public async Task<IEnumerable<Entity>> GetAllAsync()
     {
         return await context.Orders
-            .Include(o => o.OrderProducts)
+            .Include(o => o.OrderItems)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -53,7 +53,7 @@ public class OrderRepository(AppDbContext context) : IOrderRepository
     public async Task<Entity> GetByIdAsync(Guid id)
     {
         var order = await context.Orders
-            .Include(o => o.OrderProducts)
+            .Include(o => o.OrderItems)
             .Include(o => o.PaymentInfo)
             .AsNoTracking()
             .FirstOrDefaultAsync(o => o.Id == id);

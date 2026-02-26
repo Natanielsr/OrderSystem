@@ -2,7 +2,7 @@ using System;
 
 namespace OrderSystem.Domain.Entities;
 
-public class OrderProduct : Entity
+public class OrderItem : Entity
 {
     public required Guid OrderId { get; init; }
     public Order? Order { get; set; }

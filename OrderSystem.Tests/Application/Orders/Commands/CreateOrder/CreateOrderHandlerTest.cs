@@ -83,7 +83,7 @@ public class CreateOrderHandlerTest
             CreationDate = DateTimeOffset.UtcNow,
             UpdateDate = DateTimeOffset.UtcNow,
             Active = true,
-            OrderProducts = new List<OrderProduct>(),
+            OrderItems = new List<OrderItem>(),
             UserId = Guid.Empty,
             UserName = "userName",
             UserEmail = "userEmail",
@@ -95,7 +95,7 @@ public class CreateOrderHandlerTest
 
         foreach (var product in TestProducts)
         {
-            order.AddProductOrder(new OrderProduct()
+            order.AddProductOrder(new OrderItem()
             {
                 Id = product.Id,
                 CreationDate = DateTimeOffset.UtcNow,
@@ -113,7 +113,7 @@ public class CreateOrderHandlerTest
 
     CreateOrderCommand createOrderCommand()
     {
-        List<CreateOrderProductDto> createOrderProductDtos = new List<CreateOrderProductDto>();
+        List<CreateOrderItemDto> createOrderProductDtos = new List<CreateOrderItemDto>();
         foreach (var product in TestProducts)
         {
             createOrderProductDtos.Add(new() { ProductId = product.Id, Quantity = product.AvailableQuantity });
@@ -150,11 +150,11 @@ public class CreateOrderHandlerTest
         var response = await createOrderHandler.Handle(command, cancellationToken);
 
         //Assert
-        Assert.Equal(3, response.OrderProducts.Count);
+        Assert.Equal(3, response.OrderItems.Count);
         for (int i = 0; i < TestProducts.Count; i++)
         {
             Product testProduct = TestProducts.ElementAt(i);
-            var responseProduct = response.OrderProducts.ElementAt(i);
+            var responseProduct = response.OrderItems.ElementAt(i);
 
             Assert.Equal(testProduct.Id, responseProduct.ProductId);
         }
@@ -173,11 +173,11 @@ public class CreateOrderHandlerTest
         CreateOrderResponseDto response = await createOrderHandler.Handle(command, cancellationToken);
 
         //Assert
-        Assert.Equal(3, response.OrderProducts.Count);
+        Assert.Equal(3, response.OrderItems.Count);
         for (int i = 0; i < TestProducts.Count; i++)
         {
             Product testProduct = TestProducts.ElementAt(i);
-            var responseProduct = response.OrderProducts.ElementAt(i);
+            var responseProduct = response.OrderItems.ElementAt(i);
 
             Assert.Equal(testProduct.Price, responseProduct.UnitPrice);
         }
@@ -196,11 +196,11 @@ public class CreateOrderHandlerTest
         var response = await createOrderHandler.Handle(command, cancellationToken);
 
         //Assert
-        Assert.Equal(3, response.OrderProducts.Count);
+        Assert.Equal(3, response.OrderItems.Count);
         for (int i = 0; i < TestProducts.Count; i++)
         {
-            CreateOrderProductDto createOrderProductDto = command.OrderProducts.ElementAt(i);
-            var responseProduct = response.OrderProducts.ElementAt(i);
+            CreateOrderItemDto createOrderProductDto = command.OrderItems.ElementAt(i);
+            var responseProduct = response.OrderItems.ElementAt(i);
 
             Assert.Equal(createOrderProductDto.Quantity, responseProduct.Quantity);
         }
@@ -214,7 +214,7 @@ public class CreateOrderHandlerTest
     {
         //Arrange
 
-        List<CreateOrderProductDto> createOrderProductDtos = new List<CreateOrderProductDto>()
+        List<CreateOrderItemDto> createOrderProductDtos = new List<CreateOrderItemDto>()
         {
             new() { ProductId = Guid.NewGuid(), Quantity = 1 }
         };
@@ -239,7 +239,7 @@ public class CreateOrderHandlerTest
     {
         //Arrange
 
-        List<CreateOrderProductDto> createOrderProductDtos = new List<CreateOrderProductDto>()
+        List<CreateOrderItemDto> createOrderProductDtos = new List<CreateOrderItemDto>()
         {
             new() { ProductId = TestProducts.ElementAt(0).Id, Quantity = 1 },
             new() { ProductId = TestProducts.ElementAt(0).Id, Quantity = 1 }
@@ -266,7 +266,7 @@ public class CreateOrderHandlerTest
         //Arrange
         var product = TestProducts.ElementAt(0);
         var productId = TestProducts.ElementAt(0).Id;
-        List<CreateOrderProductDto> createOrderProductDtos = new List<CreateOrderProductDto>()
+        List<CreateOrderItemDto> createOrderProductDtos = new List<CreateOrderItemDto>()
         {
             new() { ProductId = productId, Quantity = 1 }
         };

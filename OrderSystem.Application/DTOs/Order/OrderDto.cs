@@ -5,7 +5,7 @@ public record class OrderDto
     public Guid Id { get; set; }
     public DateTimeOffset CreationDate { get; set; }
     public DateTimeOffset UpdateDate { get; set; }
-    public List<OrderProductDto>? OrderProducts { get; set; }
+    public List<OrderItemDto>? OrderItems { get; set; }
     public Guid UserId { get; set; }
     public string UserName { get; set; } = string.Empty;
     public string UserEmail { get; set; } = string.Empty;

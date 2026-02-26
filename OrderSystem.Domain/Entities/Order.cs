@@ -13,7 +13,7 @@ public enum OrderStatus
 
 public class Order : Entity
 {
-    public required List<OrderProduct> OrderProducts { get; init; }
+    public required List<OrderItem> OrderItems { get; init; }
     public required Guid UserId { get; init; }
     public User? User { get; set; }
     public required string UserName { get; init; }
@@ -25,12 +25,12 @@ public class Order : Entity
     public required Guid AddressId { get; init; }
     public Address? Address { get; set; }
 
-    public static decimal CalcTotal(List<OrderProduct> orderProducts)
+    public static decimal CalcTotal(List<OrderItem> orderItems)
     {
         decimal total = 0;
-        foreach (OrderProduct p in orderProducts)
+        foreach (OrderItem i in orderItems)
         {
-            total += p.Total;
+            total += i.Total;
         }
 
         return total;
@@ -38,31 +38,31 @@ public class Order : Entity
 
     public Order() { }
 
-    public void AddProductOrder(OrderProduct productOrder)
+    public void AddProductOrder(OrderItem orderItem)
     {
-        if (productOrder is null)
+        if (orderItem is null)
             throw new AddProductOrderException("productOrder cant be null");
 
-        if (productOrder.Quantity <= 0)
+        if (orderItem.Quantity <= 0)
             throw new AddProductOrderException("productOrder quantity must be bigger then zero");
 
-        if (productOrder.UnitPrice <= 0)
+        if (orderItem.UnitPrice <= 0)
             throw new AddProductOrderException("productOrder UnitPrice must be bigger then zero");
 
-        if (ProductExistsInOrder(productOrder.ProductId))
+        if (ProductExistsInOrder(orderItem.ProductId))
             throw new AddProductOrderException("ProductId already exists in productOrder");
 
-        OrderProducts.Add(productOrder);
+        OrderItems.Add(orderItem);
     }
 
     private bool ProductExistsInOrder(Guid productId)
     {
         // "Existe algum produto onde o ID seja igual ao productId?"
-        return OrderProducts.Any(x => x.ProductId == productId);
+        return OrderItems.Any(x => x.ProductId == productId);
     }
 
     public static Order CreateOrder(
-        List<OrderProduct> orderProducts,
+        List<OrderItem> orderItems,
         Guid userId,
         string userName,
         string userEmail,
@@ -78,7 +78,7 @@ public class Order : Entity
             CreationDate = DateTimeOffset.UtcNow,
             UpdateDate = DateTimeOffset.UtcNow,
             Active = true,
-            OrderProducts = orderProducts,
+            OrderItems = orderItems,
             UserId = userId,
             UserName = userName,
             UserEmail = userEmail,
