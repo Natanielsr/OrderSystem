@@ -22,12 +22,17 @@ public class DbContextTest
         {
             await context.Database.EnsureCreatedAsync();
 
-            context.Products.Add(new Product(
-                productId,
-                "ProductTests",
-                999,
-                1
-            ));
+            context.Products.Add(new Product()
+            {
+                Id = productId,
+                CreationDate = DateTimeOffset.UtcNow,
+                UpdateDate = DateTimeOffset.UtcNow,
+                Active = true,
+                ImagePath = "",
+                Name = "ProductTests",
+                Price = 999,
+                AvailableQuantity = 1,
+            });
 
             await context.SaveChangesAsync();
         }
