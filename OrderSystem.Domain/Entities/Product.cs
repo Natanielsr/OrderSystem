@@ -5,43 +5,35 @@ namespace OrderSystem.Domain.Entities;
 
 public class Product : Entity
 {
-    public string Name { get; private set; } = string.Empty;
-    public decimal Price { get; private set; }
+    public required string Name { get; set; } = string.Empty;
+    public required decimal Price { get; set; }
 
-    public int AvailableQuantity { get; private set; }
+    public required int AvailableQuantity { get; set; }
 
-    public string ImagePath { get; set; } = string.Empty;
+    public required string ImagePath { get; set; }
 
     public int Version { get; set; }
 
-    protected Product() { }
+    public Product() { }
 
-    public Product(
-        Guid id,
+    public static Product CreateProduct(
         string name,
         decimal price,
-        int availableQuantity
-        ) : base(id)
+        int availableQuantity,
+        string imagePath
+    )
     {
-        this.Name = name;
-        this.Price = price;
-        this.AvailableQuantity = availableQuantity;
-        SetActive();
-    }
-
-    public Product(
-        Guid id,
-        DateTimeOffset creationDate,
-        DateTimeOffset updateDate,
-        bool active,
-        string name,
-        decimal price,
-        int availableQuantity
-        ) : base(id, creationDate, updateDate, active)
-    {
-        this.Name = name;
-        this.Price = price;
-        this.AvailableQuantity = availableQuantity;
+        return new Product()
+        {
+            Id = Guid.NewGuid(),
+            CreationDate = DateTimeOffset.UtcNow,
+            UpdateDate = DateTimeOffset.UtcNow,
+            Active = true,
+            Name = name,
+            Price = price,
+            AvailableQuantity = availableQuantity,
+            ImagePath = imagePath,
+        };
     }
 
     public int ReduceInStock(int Quantity)
