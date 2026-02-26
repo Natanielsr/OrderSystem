@@ -1,3 +1,4 @@
+using System.Data.Common;
 using AutoMapper;
 using Moq;
 using OrderSystem.Application.DTOs.Order;
@@ -22,9 +23,9 @@ public class CreateOrderHandlerTest
 
     private readonly List<Product> TestProducts = new List<Product>()
     {
-        new ( Guid.NewGuid(), "Product1", 1, 1),
-        new ( Guid.NewGuid(), "Product2", 2, 2),
-        new ( Guid.NewGuid(), "Product3", 3, 3),
+        Product.CreateProduct("Product1", 1, 1, ""),
+        Product.CreateProduct("Product2", 2, 2, ""),
+        Product.CreateProduct("Product3", 3, 3, "")
     };
 
     Order? order;
@@ -47,7 +48,7 @@ public class CreateOrderHandlerTest
     {
         mockUserRepository = new Mock<IUserRepository>();
 
-        user = new User(userId, "UserTest", "usertest@email.com", "password");
+        user = User.CreateUser("UserTest", "usertest@email.com", "password", "role", "telephone");
 
         mockUserRepository.Setup(ur => ur.GetByIdAsync(userId)).ReturnsAsync(user);
 
@@ -76,15 +77,36 @@ public class CreateOrderHandlerTest
 
     void createMockOrder()
     {
-        order = new(OrderId);
+        order = new Order()
+        {
+            Id = OrderId,
+            CreationDate = DateTimeOffset.UtcNow,
+            UpdateDate = DateTimeOffset.UtcNow,
+            Active = true,
+            OrderProducts = new List<OrderProduct>(),
+            UserId = Guid.Empty,
+            UserName = "userName",
+            UserEmail = "userEmail",
+            Total = 14,
+            Status = OrderStatus.Pending,
+            Code = "code",
+            AddressId = Guid.Empty
+        };
 
         foreach (var product in TestProducts)
         {
-            order.AddProductOrder(new(
-                product.Id,
-                product.Name,
-                product.Price,
-                product.AvailableQuantity));
+            order.AddProductOrder(new OrderProduct()
+            {
+                Id = product.Id,
+                CreationDate = DateTimeOffset.UtcNow,
+                UpdateDate = DateTimeOffset.UtcNow,
+                Active = true,
+                OrderId = OrderId,
+                ProductId = product.Id,
+                ProductName = product.Name,
+                UnitPrice = product.Price,
+                Quantity = product.AvailableQuantity
+            });
         }
         mockOrderUnitOfWork.Setup(m => m.orderRepository.AddAsync(It.IsAny<Order>())).ReturnsAsync(order);
     }
