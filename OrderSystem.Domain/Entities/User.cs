@@ -11,78 +11,38 @@ public static class UserRole
 
 public class User : Entity
 {
-    public string? Username { get; private set; }
-    public string? Email { get; private set; }
-    public string? HashedPassword { get; private set; }
-    private IPasswordService? _passwordService;
+    public required string Username { get; init; }
+    public required string Email { get; init; }
+    public required string HashedPassword { get; init; }
 
-    public string? Role { get; private set; }
+    public required string Role { get; init; }
 
-    public List<Address>? Addresses { get; set; }
+    public List<Address>? Addresses { get; init; }
 
-    protected User() { }
+    public required string Telephone { get; init; }
 
-    public User(Guid id,
-        string username,
-        string email,
-        string hashedPassword
+    public User() { }
 
-        ) : base(id)
-    {
-        this.Username = username;
-        this.Email = email;
-        this.HashedPassword = hashedPassword;
-        this.Role = UserRole.User;
-    }
-
-    public User(Guid id,
+    public static User CreateUser(
         string username,
         string email,
         string hashedPassword,
-        string role
-
-        ) : base(id)
+        string role,
+        string telephone
+    )
     {
-        this.Username = username;
-        this.Email = email;
-        this.HashedPassword = hashedPassword;
-        this.Role = role;
+        return new User()
+        {
+            Id = Guid.NewGuid(),
+            CreationDate = DateTimeOffset.UtcNow,
+            UpdateDate = DateTimeOffset.UtcNow,
+            Active = true,
+            Username = username,
+            Email = email,
+            HashedPassword = hashedPassword,
+            Role = role,
+            Telephone = telephone
+        };
     }
 
-    public User(Guid id,
-        DateTimeOffset creationDate,
-        DateTimeOffset updateDate,
-        bool active,
-        string username,
-        string email,
-        string HashedPassword,
-        string role
-
-        ) : base(id, creationDate, updateDate, active)
-    {
-        this.Username = username;
-        this.Email = email;
-        this.HashedPassword = HashedPassword;
-        this.Role = role;
-    }
-
-    public void SetNormalUserRole()
-    {
-        Role = UserRole.User;
-    }
-
-    public void SetPasswordService(IPasswordService passwordService)
-    {
-        _passwordService = passwordService;
-    }
-
-    public string HashPassword(string password)
-    {
-        if (_passwordService != null)
-            HashedPassword = _passwordService.HashPassword(password);
-        else
-            throw new Exception("IPasswordService not set use SetPasswordService() method");
-
-        return HashedPassword;
-    }
 }
