@@ -10,9 +10,6 @@ public class AddressRepository(AppDbContext context) : IAddressRepository
 {
     public async Task<Entity> AddAsync(Entity entity)
     {
-        Address address = (Address)entity;
-        address.SetDefaultEntityProps();
-
         await context.Addresses.AddAsync((Address)entity);
 
         return entity;
