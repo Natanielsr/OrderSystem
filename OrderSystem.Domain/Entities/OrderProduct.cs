@@ -4,22 +4,13 @@ namespace OrderSystem.Domain.Entities;
 
 public class OrderProduct : Entity
 {
-    public Guid OrderId { get; private set; }
+    public required Guid OrderId { get; init; }
     public Order? Order { get; set; }
-    public Guid ProductId { get; private set; }
+    public required Guid ProductId { get; init; }
     public Product? Product { get; set; }
-    public string ProductName { get; set; }
-    public decimal UnitPrice { get; private set; }
-    public int Quantity { get; private set; }
-
-    public OrderProduct(Guid productId, string productName, decimal unitPrice, int quantity)
-    {
-        ProductId = productId;
-        UnitPrice = unitPrice;
-        Quantity = quantity;
-        ProductName = productName;
-    }
-
+    public required string ProductName { get; init; }
+    public required decimal UnitPrice { get; init; }
+    public required int Quantity { get; init; }
 
     public decimal Total
     {
