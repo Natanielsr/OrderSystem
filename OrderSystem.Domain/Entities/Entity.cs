@@ -2,32 +2,12 @@ namespace OrderSystem.Domain.Entities;
 
 public abstract class Entity
 {
-    public Guid Id { get; private set; }
-    public DateTimeOffset CreationDate { get; private set; }
-    public DateTimeOffset UpdateDate { get; private set; }
-    public bool Active { get; private set; }
+    public required Guid Id { get; init; }
+    public required DateTimeOffset CreationDate { get; init; }
+    public required DateTimeOffset UpdateDate { get; set; }
+    public required bool Active { get; set; }
 
-    protected Entity() { }
-
-    public Entity(Guid id)
-    {
-        this.Id = id;
-    }
-
-    public Entity(Guid id, DateTimeOffset creationDate, DateTimeOffset updateDate, bool active)
-    {
-        this.Id = id;
-        this.CreationDate = creationDate;
-        this.UpdateDate = updateDate;
-        this.Active = active;
-    }
-
-    public void SetDefaultEntityProps()
-    {
-        CreationDate = DateTimeOffset.UtcNow;
-        UpdateDate = DateTimeOffset.UtcNow;
-        Active = true;
-    }
+    public Entity() { }
 
     public void RenewUpdateDate()
     {
