@@ -11,23 +11,31 @@ public static class DbInitializer
 
         if (context.Users.Any()) return; // Banco já tem dados
 
-        var user = new User(
-            Guid.NewGuid(),
-            "UserTest",
-            "usertest@email.com",
-            passwordService.HashPassword("password123"),
-            UserRole.User
-        );
-        user.SetDefaultEntityProps();
+        var user = new User()
+        {
+            Id = Guid.Empty,
+            CreationDate = DateTimeOffset.UtcNow,
+            UpdateDate = DateTimeOffset.UtcNow,
+            Active = true,
+            Telephone = "",
+            Username = "UserTest",
+            Email = "usertest@email.com",
+            HashedPassword = passwordService.HashPassword("password123"),
+            Role = UserRole.User
+        };
 
-        var admin = new User(
-            Guid.NewGuid(),
-            "admin",
-            "admin@email.com",
-            passwordService.HashPassword("admin"),
-            UserRole.Admin
-        );
-        admin.SetDefaultEntityProps();
+        var admin = new User()
+        {
+            Id = Guid.NewGuid(),
+            CreationDate = DateTimeOffset.UtcNow,
+            UpdateDate = DateTimeOffset.UtcNow,
+            Active = true,
+            Username = "admin",
+            Email = "admin@email.com",
+            HashedPassword = passwordService.HashPassword("admin"),
+            Role = UserRole.Admin,
+            Telephone = ""
+        };
 
 
         context.Users.Add(user);
