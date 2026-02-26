@@ -7,7 +7,8 @@ public record class CreateUserCommand(
     string Username,
     string Email,
     string Password,
-    string ConfirmPassword
+    string ConfirmPassword,
+    string Telephone
 ) : IRequest<CreateUserResponseDto>
 {
 
