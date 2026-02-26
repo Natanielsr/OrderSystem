@@ -21,7 +21,6 @@ public class CreateProductHandler(
     public async Task<CreateProductResponseDto> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
         Product product = mapper.Map<Product>(request);
-        product.SetDefaultEntityProps();
 
         var IsValidImage = ImageValidator.IsValidImage(
             request.FileStream,
