@@ -27,11 +27,18 @@ public class CreateUserHandler(
         if (emailUser != null)
             throw new EmailAlreadyExistsException();
 
-        User user = mapper.Map<User>(request);
-        user.SetDefaultEntityProps();
-        user.SetPasswordService(passwordService);
-        user.HashPassword(request.Password);
-        user.SetNormalUserRole();
+        User user = new User()
+        {
+            Id = Guid.NewGuid(),
+            CreationDate = DateTimeOffset.UtcNow,
+            UpdateDate = DateTimeOffset.UtcNow,
+            Active = true,
+            Username = request.Username,
+            Email = request.Email,
+            HashedPassword = passwordService.HashPassword(request.Password),
+            Role = UserRole.User,
+            Telephone = request.Telephone
+        };
 
         var response = await userRepository.AddAsync(user);
         await unitOfWork.CommitAsync();
