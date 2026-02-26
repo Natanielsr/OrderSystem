@@ -13,60 +13,30 @@ public enum OrderStatus
 
 public class Order : Entity
 {
-    public List<OrderProduct> OrderProducts { get; private set; } = new List<OrderProduct>();
-    public Guid UserId { get; private set; }
+    public required List<OrderProduct> OrderProducts { get; init; }
+    public required Guid UserId { get; init; }
     public User? User { get; set; }
-    public string UserName { get; private set; } = string.Empty;
-    public string UserEmail { get; private set; } = string.Empty;
-    public decimal Total { get; set; }
-    public OrderStatus Status { get; set; }
+    public required string UserName { get; init; }
+    public required string UserEmail { get; init; }
+    public required decimal Total { get; init; }
+    public required OrderStatus Status { get; init; }
     public List<PaymentInfo> PaymentInfo { get; set; } = new List<PaymentInfo>();
-    public string? Code { get; private set; }
-    public Guid AddressId { get; set; }
+    public required string Code { get; init; }
+    public required Guid AddressId { get; init; }
     public Address? Address { get; set; }
 
-    public decimal CalcTotal
+    public static decimal CalcTotal(List<OrderProduct> orderProducts)
     {
-        get
+        decimal total = 0;
+        foreach (OrderProduct p in orderProducts)
         {
-            decimal total = 0;
-            foreach (OrderProduct p in OrderProducts)
-            {
-                total += p.Total;
-            }
-
-            return total;
+            total += p.Total;
         }
+
+        return total;
     }
 
-
-    protected Order() { }
-
-    public Order(Guid id) : base(id)
-    {
-        SetDefaultEntityProps();
-    }
-
-    public Order(Guid id,
-        DateTimeOffset creationDate,
-        DateTimeOffset updateDate,
-        bool active,
-        List<OrderProduct> orderProducts,
-        Guid userId,
-        User user,
-        string userName,
-        string userEmail,
-        string code
-
-        ) : base(id, creationDate, updateDate, active)
-    {
-        this.UserId = userId;
-        this.User = user;
-        this.UserName = userName;
-        this.UserEmail = userEmail;
-        this.OrderProducts = orderProducts;
-        this.Code = code;
-    }
+    public Order() { }
 
     public void AddProductOrder(OrderProduct productOrder)
     {
@@ -82,7 +52,6 @@ public class Order : Entity
         if (ProductExistsInOrder(productOrder.ProductId))
             throw new AddProductOrderException("ProductId already exists in productOrder");
 
-        productOrder.SetDefaultEntityProps();
         OrderProducts.Add(productOrder);
     }
 
@@ -92,38 +61,34 @@ public class Order : Entity
         return OrderProducts.Any(x => x.ProductId == productId);
     }
 
-    public void SetUsername(string? username)
+    public static Order CreateOrder(
+        List<OrderProduct> orderProducts,
+        Guid userId,
+        string userName,
+        string userEmail,
+        decimal total,
+        OrderStatus status,
+        string code,
+        Guid addressId
+        )
     {
-        if (username == null)
-            throw new NullReferenceException("username is null");
-
-        UserName = username;
+        return new Order()
+        {
+            Id = Guid.NewGuid(),
+            CreationDate = DateTimeOffset.UtcNow,
+            UpdateDate = DateTimeOffset.UtcNow,
+            Active = true,
+            OrderProducts = orderProducts,
+            UserId = userId,
+            UserName = userName,
+            UserEmail = userEmail,
+            Total = total,
+            Status = status,
+            Code = code,
+            AddressId = addressId
+        };
     }
 
-    public void SetEmail(string? email)
-    {
-        if (email == null)
-            throw new NullReferenceException("email is null");
 
-        UserEmail = email;
-    }
-
-    public string GenerateCode(int length = 8)
-    {
-        // Definimos os caracteres permitidos (Letras e Números)
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-        Random random = new Random();
-
-        // Geramos a string escolhendo caracteres aleatórios da lista acima
-        char[] result = Enumerable.Repeat(chars, length)
-            .Select(s => s[random.Next(s.Length)])
-            .ToArray();
-
-        var resultString = new string(result);
-        this.Code = resultString;
-
-        return resultString;
-    }
 
 }
