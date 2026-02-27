@@ -23,7 +23,7 @@ namespace OrderSystem.API.Controllers
         [HttpGet("{id:guid}", Name = "GetUserById")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var response = await mediator.Send(new GetUserCommand(id));
+            var response = await mediator.Send(new GetUserByIdCommand(id));
 
             return Ok(response);
         }
