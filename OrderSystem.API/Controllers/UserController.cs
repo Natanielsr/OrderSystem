@@ -1,6 +1,9 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OrderSystem.API.Security;
+using OrderSystem.Application.Authorization;
 using OrderSystem.Application.DTOs.User;
 using OrderSystem.Application.Users.Commands.Auth;
 using OrderSystem.Application.Users.Commands.CreateUser;
@@ -19,11 +22,20 @@ namespace OrderSystem.API.Controllers
             return CreatedAtRoute("GetUserById", new { id = response.Id }, response);
         }
 
-
+        [Authorize]
         [HttpGet("{id:guid}", Name = "GetUserById")]
         public async Task<IActionResult> GetById(Guid id)
         {
+            var userClaim = APIClaim.createUserClaim(User);
+            var authorizationResponse = AuthorizationBase.ValidUser(userClaim, id);
+            if (!authorizationResponse.Success)
+            {
+                return StatusCode(403, authorizationResponse.Message);
+            }
+
             var response = await mediator.Send(new GetUserByIdCommand(id));
+            if (response == null)
+                return NotFound("User Not Found");
 
             return Ok(response);
         }
