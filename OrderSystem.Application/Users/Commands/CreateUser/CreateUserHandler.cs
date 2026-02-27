@@ -36,8 +36,7 @@ public class CreateUserHandler(
             Username = request.Username,
             Email = request.Email,
             HashedPassword = passwordService.HashPassword(request.Password),
-            Role = UserRole.User,
-            Telephone = request.Telephone
+            Role = UserRole.User
         };
 
         var response = await userRepository.AddAsync(user);
