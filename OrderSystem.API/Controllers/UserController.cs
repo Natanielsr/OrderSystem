@@ -11,7 +11,7 @@ namespace OrderSystem.API.Controllers
     [ApiController]
     public class UserController(IMediator mediator) : ControllerBase
     {
-        [HttpPost("Create")]
+        [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateUserCommand createUserCommand)
         {
             CreateUserResponseDto response = await mediator.Send(createUserCommand);
