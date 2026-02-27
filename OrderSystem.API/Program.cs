@@ -45,6 +45,7 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add<BadRequestFilter>();
     options.Filters.Add<ValidationExceptionFilter>();
+    options.Filters.Add<ConflictFilter>();
 });
 
 builder.Services.AddApplication();

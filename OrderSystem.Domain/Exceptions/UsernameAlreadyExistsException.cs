@@ -2,7 +2,7 @@ using System;
 
 namespace OrderSystem.Domain.Exceptions;
 
-public class UsernameAlreadyExistsException : BadRequest
+public class UsernameAlreadyExistsException : ConflictException
 {
     public UsernameAlreadyExistsException() : base("Username Already exists")
     {
