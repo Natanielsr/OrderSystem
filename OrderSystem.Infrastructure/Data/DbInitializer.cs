@@ -17,7 +17,7 @@ public static class DbInitializer
             CreationDate = DateTimeOffset.UtcNow,
             UpdateDate = DateTimeOffset.UtcNow,
             Active = true,
-            Telephone = "",
+            Phone = "(15)99730-7629",
             Username = "UserTest",
             Email = "usertest@email.com",
             HashedPassword = passwordService.HashPassword("password123"),
@@ -34,7 +34,7 @@ public static class DbInitializer
             Email = "admin@email.com",
             HashedPassword = passwordService.HashPassword("admin"),
             Role = UserRole.Admin,
-            Telephone = ""
+            Phone = "(15)99730-7629"
         };
 
 

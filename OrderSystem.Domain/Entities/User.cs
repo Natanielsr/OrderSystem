@@ -19,7 +19,7 @@ public class User : Entity
 
     public List<Address>? Addresses { get; init; }
 
-    public string Telephone { get; set; } = string.Empty;
+    public string Phone { get; set; } = string.Empty;
 
     public User() { }
 
@@ -28,7 +28,7 @@ public class User : Entity
         string email,
         string hashedPassword,
         string role,
-        string telephone
+        string phone
     )
     {
         return new User()
@@ -41,7 +41,7 @@ public class User : Entity
             Email = email,
             HashedPassword = hashedPassword,
             Role = role,
-            Telephone = telephone
+            Phone = phone
         };
     }
 
