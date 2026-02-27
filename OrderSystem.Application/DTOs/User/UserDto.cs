@@ -2,10 +2,9 @@ namespace OrderSystem.Application.DTOs.User;
 
 public record class UserDto
 {
-    public Guid Id { get; set; }
-    public required string Username { get; set; }
-    public required string Email { get; set; }
-
-    public string Telephone { get; set; } = string.Empty;
+    public required Guid Id { get; init; }
+    public required string Username { get; init; }
+    public required string Email { get; init; }
+    public required string Telephone { get; init; }
 
 }
