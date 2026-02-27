@@ -6,5 +6,6 @@ public record class UserDto
     public required string Username { get; init; }
     public required string Email { get; init; }
     public required string Telephone { get; init; }
+    public required string Role { get; set; }
 
 }
