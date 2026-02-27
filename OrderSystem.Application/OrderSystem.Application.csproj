@@ -34,6 +34,7 @@
     <Folder Include="Services/" />
     <Folder Include="Users/Commands/AuthEmail/" />
     <Folder Include="Users/Commands/CreateUser/" />
+    <Folder Include="Users/Commands/UpdateUser/" />
   </ItemGroup>
 
   <PropertyGroup>
