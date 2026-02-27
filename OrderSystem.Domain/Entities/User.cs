@@ -19,7 +19,7 @@ public class User : Entity
 
     public List<Address>? Addresses { get; init; }
 
-    public required string Telephone { get; init; }
+    public string Telephone { get; set; } = string.Empty;
 
     public User() { }
 
