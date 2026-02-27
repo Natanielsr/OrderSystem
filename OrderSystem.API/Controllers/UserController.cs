@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using OrderSystem.Application.DTOs.User;
 using OrderSystem.Application.Users.Commands.Auth;
 using OrderSystem.Application.Users.Commands.CreateUser;
+using OrderSystem.Application.Users.Commands.GetUser;
 
 namespace OrderSystem.API.Controllers
 {
@@ -22,9 +23,9 @@ namespace OrderSystem.API.Controllers
         [HttpGet("{id:guid}", Name = "GetUserById")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            // var response = await mediator.Send(new GetOrderByIdQuery(id));
+            var response = await mediator.Send(new GetUserCommand(id));
 
-            return Ok();
+            return Ok(response);
         }
 
 
