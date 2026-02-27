@@ -61,13 +61,8 @@ public class UserRepository(AppDbContext context) : IUserRepository
 
     public async Task<Entity> UpdateAsync(Guid id, Entity updatedEntity)
     {
-        var user = await context.Users.FindAsync(id);
+        context.Users.Update((User)updatedEntity);
 
-        if (user != null)
-        {
-            user = (User)updatedEntity;
-        }
-
-        return user!;
+        return (User)updatedEntity!;
     }
 }
